@@ -1,6 +1,6 @@
 <?php
 //Connection à la BDD
-$link = mysqli_connect('localhost', 'root', 'root', 'sea');
+$link = mysqli_connect('localhost', 'mamp', '', 'sea');
 
 //Vérification
 if (!$link) {
