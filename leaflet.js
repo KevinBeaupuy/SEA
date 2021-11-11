@@ -7,12 +7,13 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(mymap);
 
 
-//Récupération beforeAddfetch('fetch.php', {
+// Récupération bdd
+fetch('fetch.php', {
 })
 .then(r => r.json())
 .then(r => {
     console.log(r);
-
+});
 
 // on ajoute un élément sur la carte
 var myIcon = L.icon({
