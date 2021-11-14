@@ -6,7 +6,7 @@ $link = mysqli_connect('localhost', 'root', 'root', 'sea');
 if (!$link) {
   die('Erreur de connexion');
 } else {
-  echo 'Succès... ';
+  //echo 'Succès... ';
 }
 
 //Prévention de potentiels problèmes d'encodages

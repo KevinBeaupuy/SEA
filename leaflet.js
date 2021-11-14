@@ -10,13 +10,36 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 /*
 // Récupération bdd
+/*
 fetch('fetch.php', {
 })
 .then(r => r.json())
 .then(r => {
     console.log(r);
-});
-*/
+});*/
+function appel(param){
+  $(document).ready(function(event){
+  console.log("test fetch 1");
+
+    $.ajax({
+                url: "fetch.php",
+                type: "POST",
+                data: {"nom": param},
+                dataType: "json",
+                async: true,
+                success: function(data,status){
+
+                  console.log(data);
+
+                  console.log("test fetch 2");}
+
+            })
+
+          });
+}
+appel("parfum")
+appel('voiture')
+
 // on ajoute un élément sur la carte
 var myIcon = L.icon({
   iconUrl: 'image/takieddine.jpg',
