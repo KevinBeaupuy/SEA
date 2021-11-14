@@ -1,7 +1,13 @@
 <?php
-$cars = array("Volvo", "BMW", "Toyota");
+$nom=$_POST["nom"];
+// echo '<script>console.log("Your stuff here")</script>';
 
-echo json_encode($cars);
+
+if (empty($nom)) {
+  echo "c'est videeeeeeeeeee !";
+}
+// else
+//   echo "console.log('cest pas vide !!')";
 
 
 include('connect.php');
@@ -17,9 +23,7 @@ include('connect.php');
 //      }
 //
 
-
-
-$requete = 'SELECT * FROM objets';
+$requete = "SELECT * FROM objets where nom like '".$nom."'";
 $tab=[];
 if($result=mysqli_query($link,$requete)){
   while($ligne=mysqli_fetch_assoc($result)){
@@ -29,4 +33,9 @@ if($result=mysqli_query($link,$requete)){
   }
 }
 echo json_encode($tab);
+// if (sizeof($nom) != 0) {
+// }
+// else :
+//   echo "requête vide";
+
 ?>
