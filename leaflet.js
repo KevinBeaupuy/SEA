@@ -47,12 +47,12 @@ var myIcon = L.icon({
   popupAnchor: [0, -20]
 });
 
-var ziadMarker = L.marker([51.5, 0], {icon: myIcon},{zoom: 13}).addTo(mymap)
+var ziadMarker = L.marker([51.5, 0], {icon: myIcon, zoom: 13}).addTo(mymap)
   .bindPopup('Je suis takieddine');
 
 
 
-var guantIcon = L.icon({
+var gueantIcon = L.icon({
   iconUrl: 'image/gueant.png',
   iconSize: [45, 45],
   popupAnchor: [0, -20]
@@ -60,7 +60,7 @@ var guantIcon = L.icon({
 
 
 var bouton_recuperer ='<button id="bouton_recup" ' + '>Récupère moi </button>';
-var recup = L.marker([51.6,0.1],{icon: guantIcon}, {zoom:9}).bindPopup(bouton_recuperer);
+var recup = L.marker([51.6,0.1],{icon: gueantIcon, zoom:9, draggable:true}).bindPopup(bouton_recuperer);
 
 
 ziadMarker.addEventListener('click',function(){
@@ -75,6 +75,29 @@ ziadMarker.addEventListener('click',function(){
     })
 
 });
+
+
+//dragStartDraggEnd
+
+recup.addEventListener('dragend',function(e){
+  var coord = recup.getLatLng() ;
+  console.log(coord);
+  var coord2 = coord.toString();
+  console.log(coord2);
+  //var coord = e.latlng.toString();
+  var premiereParenthese = coord2.indexOf("(");
+  var deuxiemeParenthese = coord2.indexOf(")");
+  var virgule = coord2.indexOf(",");
+
+  var x_souris = coord2.substring(premiereParenthese+1,virgule);
+  var y_souris = coord2.substring(virgule+1,deuxiemeParenthese);
+  console.log(x_souris);
+
+  if (x_souris>52) {
+  alert("Attention, Claude a froid");}
+});
+
+
 
 var papier = document.createElement("papier");
 papier.src = "image/papier.png";
