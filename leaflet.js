@@ -30,11 +30,9 @@ function appel(param){
                 success: function(data,status){
                   //Afficher l'image associée aux coordonnées dans data;
                   console.log(data);
-
                   console.log("test fetch 2");}
 
             })
-
           });
 }
 appel("parfum")
@@ -80,7 +78,7 @@ var papier = document.createElement("papier");
 papier.src = "image/papier.png";
 papier.style.maxHeight = "50px";
 
-.appendChild(img_saum);
+//.appendChild(img_saum);
 
 // on ajoute l'inventaire en bas à gauche
 L.Control.Watermark = L.Control.extend({
