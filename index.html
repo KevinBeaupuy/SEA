@@ -22,21 +22,24 @@
       <h1> Sarko's Escape Adventure </h1>
     </header>
 
-    <div id="map"></div>
-    <script src="leaflet.js"></script>
+    <div id="container">
+      <div id="map"></div>
+      <script src="leaflet.js"></script>
 
-    <div id ="scores">
-      <form id="form" action="objets.php" action="fin.php" method="POST">
-          <label> User: <input type="text" name="pseudo" id="pseudo"></label>
-          <button id="bouton" class="start">START!</button>
-      </form>
-        <ul>Records</ul>
-        <ul> user : </ul>
-        <ul>scores : </ul>
+      <div id ="scores">
+        <form id="form" action="objets.php" action="fin.php" method="POST">
+            <label> User: <input type="text" name="pseudo" id="pseudo"></label>
+            <button id="bouton" class="start">START!</button>
+        </form>
+          <ul>Records</ul>
+          <ul> user : </ul>
+          <ul>scores : </ul>
+      </div>
     </div>
-
     <footer>
-      Tout droit réservé C
+      <p>Tout droit réservé C</p>
+      <p>Version 1.0</p>
+      <p>Dernière Maj : 16/11/2021 </p>
     </footer>
 
   </body>
