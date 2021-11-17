@@ -28,13 +28,11 @@ function appel(param){
                 dataType: "json",
                 async: true,
                 success: function(data,status){
-
+                  //Afficher l'image associée aux coordonnées dans data;
                   console.log(data);
-
                   console.log("test fetch 2");}
 
             })
-
           });
 }
 appel("parfum")

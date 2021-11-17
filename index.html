@@ -2,31 +2,42 @@
 <html lang="fr" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Sarko's Escape Adventure</title>
     <link rel="apple-touch-icon" sizes="180x180" href="image/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="image/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="image/favicon-16x16.png">
     <link rel="manifest" href="image/site.webmanifest">
-
-    <link rel="stylesheet" href="leaflet.css">
-
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
       integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
       crossorigin=""/>
-
-      <!-- Make sure you put this AFTER Leaflet's CSS -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
       integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
       crossorigin=""></script>
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   </head>
   <body>
+
+    <header>
+      <h1> Sarko's Escape Adventure </h1>
+    </header>
 
     <div id="map"></div>
     <script src="leaflet.js"></script>
 
+    <div id ="scores">
+      <form id="form" action="objets.php" action="fin.php" method="POST">
+          <label> User: <input type="text" name="pseudo" id="pseudo"></label>
+          <button id="bouton" class="start">START!</button>
+      </form>
+        <ul>Records</ul>
+        <ul> user : </ul>
+        <ul>scores : </ul>
+    </div>
+
+    <footer>
+      Tout droit réservé C
+    </footer>
 
   </body>
 </html>
