@@ -2,9 +2,6 @@
 $nom=$_POST["nom"];
 // echo '<script>console.log("Your stuff here")</script>';
 
-
-if (empty($nom)) {
-  echo "c'est videeeeeeeeeee !";
 }
 // else
 //   echo "console.log('cest pas vide !!')";
@@ -21,5 +18,4 @@ if($result=mysqli_query($link,$requete)){
   }
 }
 echo json_encode($tab);
-
 ?>
