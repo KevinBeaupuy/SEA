@@ -76,10 +76,11 @@ footer {
 
   padding-right: 10px;
 }
- #inventaire1 {
+
+ /* #inventaire1 {
   background: red;
   position:absolute;
   z-index: 1;
   width: 70%;
   height: 70%;
-}
+} */
