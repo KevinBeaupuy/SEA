@@ -27,6 +27,5 @@ include('connect.php');
    $out .= "</tr></table>";
 
    // affichage
-   // echo ($out);
    echo json_encode($out);
 ?>

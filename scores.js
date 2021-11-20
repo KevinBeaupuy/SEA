@@ -16,7 +16,7 @@ $.ajax({
    // text: $("p#tab_score").text()
 })
   .done(function( data,status ) {
-    console.log(data)
+    
     //Selecteur du tableau html
     $("#tab_score").html(data);
   });
