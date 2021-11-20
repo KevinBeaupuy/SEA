@@ -23,6 +23,8 @@ header {
   width: 700px */
   grid-row: 2/5;
   grid-column: 2/6;
+  position: absolute;
+  z-index: 2;
 }
 
 #scores {
@@ -39,4 +41,12 @@ footer {
 	margin-top : 30px;
 	margin-bottom : 30px;
 	padding: 40px;
+}
+
+ #inventaire1 {
+  background: red;
+  position:absolute;
+  z-index: 1;
+  width: 70%;
+  height: 70%;
 }

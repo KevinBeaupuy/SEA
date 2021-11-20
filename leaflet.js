@@ -75,21 +75,18 @@ ziadMarker.addEventListener('click',function(){
 });
 
 
-//dragStartDraggEnd
-
 recup.addEventListener('dragend',function(e){
   var coord = recup.getLatLng() ;
-  console.log(coord);
+  //on transforme les coordonnées en chaine de caractère
   var coord2 = coord.toString();
-  console.log(coord2);
-  //var coord = e.latlng.toString();
+
+  //on localise les éléments indésirables dans la chaine de caractère
   var premiereParenthese = coord2.indexOf("(");
   var deuxiemeParenthese = coord2.indexOf(")");
   var virgule = coord2.indexOf(",");
 
   var x_souris = coord2.substring(premiereParenthese+1,virgule);
   var y_souris = coord2.substring(virgule+1,deuxiemeParenthese);
-  console.log(x_souris);
 
   if (x_souris>52) {
   alert("Attention, Claude a froid");}
@@ -97,30 +94,30 @@ recup.addEventListener('dragend',function(e){
 
 
 
-var papier = document.createElement("papier");
-papier.src = "image/papier.png";
-papier.style.maxHeight = "50px";
-
-//.appendChild(img_saum);
+// var papier = document.createElement("img_papier");
+// papier.src = "image/papier.png";
+// papier.style.maxHeight = "50px";
+//
+// inventaire1.appendChild(img_papier);
 
 // on ajoute l'inventaire en bas à gauche
-L.Control.Watermark = L.Control.extend({
-  onAdd: function(mymap) {
-    var img = L.DomUtil.create('img');
-
-    img.src = 'image/inventaire.png';
-    img.style.width = '350px';
-
-    return img;
-  },
-
-  onRemove: function(mymap) {
-      // Nothing to do here
-      }
-  });
-
-  L.control.watermark = function(opts) {
-      return new L.Control.Watermark(opts);
-  }
-
-  L.control.watermark({ position: 'bottomleft' }).addTo(mymap);
+// L.Control.Watermark = L.Control.extend({
+//   onAdd: function(mymap) {
+//     var img = L.DomUtil.create('img');
+//
+//     img.src = 'image/inventaire.png';
+//     img.style.width = '350px';
+//
+//     return img;
+//   },
+//
+//   onRemove: function(mymap) {
+//       // Nothing to do here
+//       }
+//   });
+//
+//   L.control.watermark = function(opts) {
+//       return new L.Control.Watermark(opts);
+//   }
+//
+//   L.control.watermark({ position: 'bottomleft' }).addTo(mymap);
