@@ -1,11 +1,6 @@
 <?php
 $nom=$_POST["nom"];
-// echo '<script>console.log("Your stuff here")</script>';
-
-}
-// else
-//   echo "console.log('cest pas vide !!')";
-
+// $nom="parfum";
 
 include('connect.php');
 
@@ -17,5 +12,6 @@ if($result=mysqli_query($link,$requete)){
     $tab[]=$ligne;
   }
 }
+
 echo json_encode($tab);
 ?>

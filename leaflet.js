@@ -19,18 +19,30 @@ fetch('fetch.php', {
 });*/
 function appel(param){
   $(document).ready(function(event){
-  console.log("test fetch 1");
 
     $.ajax({
                 url: "fetch.php",
                 type: "POST",
                 data: {"nom": param},
                 dataType: "json",
-                async: true,
+                async: true,         //asynchrone
                 success: function(data,status){
                   //Afficher l'image associée aux coordonnées dans data;
-                  console.log(data);
-                  console.log("test fetch 2");}
+                  console.log(typeof(data));
+                  console.log(data[0]);
+
+                  for (var valeur in data[0]) {console.log(valeur);}
+
+                  console.log("image/{data[name]}.png");
+                  var myIcon = L.icon({
+                    iconUrl: 'image/{data[name]}.png',
+                    iconSize: [45, 45],
+                    popupAnchor: [0, -20]
+                  });
+                ;}
+
+
+
 
             })
           });
@@ -39,11 +51,11 @@ appel("parfum")
 appel('voiture')
 
 // on ajoute un élément sur la carte
-var myIcon = L.icon({
-  iconUrl: 'image/takieddine.jpg',
-  iconSize: [45, 45],
-  popupAnchor: [0, -20]
-});
+// var myIcon = L.icon({
+//   iconUrl: 'image/ziad.png',
+//   iconSize: [45, 45],
+//   popupAnchor: [0, -20]
+// });
 
 var ziadMarker = L.marker([51.5, 0], {icon: myIcon, zoom: 13}).addTo(mymap)
   .bindPopup('Je suis takieddine');
