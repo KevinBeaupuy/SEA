@@ -1,15 +1,14 @@
 <?php
 //importation de la bdd
 include('connect.php');
+
   $requete2 = "SELECT * FROM scores ORDER BY score ASC";
   $tab=[];
-
-  if($result=mysqli_query($link,$requete)){
+  if($result=mysqli_query($link,$requete2)){
     while($ligne=mysqli_fetch_assoc($result)){
-       $tab[]=$ligne;
+      //tableau associatif
+      $tab[]=$ligne;
      }
-   } else {
-     echo "Erreur de requête de base de données.";
    }
 
    //rédaction du tableau des scores
@@ -27,6 +26,7 @@ include('connect.php');
    }
    $out .= "</tr></table>";
 
-   //affichage
+   // affichage
+   // echo ($out);
    echo json_encode($out);
 ?>

@@ -25,8 +25,8 @@ function appel(param){
                 url: "fetch.php",
                 type: "POST",
                 data: {"nom": param},
-                dataType: "json",
-                async: true,
+                dataType: "json",    
+                async: true,         //asynchrone
                 success: function(data,status){
                   //Afficher l'image associée aux coordonnées dans data;
                   console.log(data);
