@@ -21,31 +21,29 @@ function appel(param){
   $(document).ready(function(event){
 
     $.ajax({
-                url: "fetch.php",
-                type: "POST",
-                data: {"nom": param},
-                dataType: "json",
-                async: true,         //asynchrone
-                success: function(data,status){
-                  //Afficher l'image associée aux coordonnées dans data;
-                  console.log(typeof(data));
-                  console.log(data[0]);
+        url: "fetch.php",
+        type: "POST",
+        data: {"nom": param},
+        dataType: "json",
+        async: true,         //asynchrone
+        success: function(data,status){
+          //Afficher l'image à ses coordonnées
+          console.log(data[0]["nom"]);
+          const nom = data[0]["nom"];
 
-                  for (var valeur in data[0]) {console.log(valeur);}
+          // for (var valeur in data[0]) {
+          //   console.log(valeur);
+          //   console.log(data[valeur]);}
 
-                  console.log("image/{data[name]}.png");
-                  var myIcon = L.icon({
-                    iconUrl: 'image/{data[name]}.png',
-                    iconSize: [45, 45],
-                    popupAnchor: [0, -20]
-                  });
-                ;}
-
-
-
-
-            })
+          console.log('image/'${nom}'.png');
+          var myIcon = L.icon({
+            iconUrl: "image/data[name].png",
+            iconSize: [45, 45],
+            popupAnchor: [0, -20]
           });
+        ;}
+      })
+    });
 }
 appel("parfum")
 appel('voiture')
