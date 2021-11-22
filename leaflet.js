@@ -49,11 +49,11 @@ appel("parfum")
 appel('voiture')
 
 // on ajoute un élément sur la carte
-// var myIcon = L.icon({
-//   iconUrl: 'image/ziad.png',
-//   iconSize: [45, 45],
-//   popupAnchor: [0, -20]
-// });
+var myIcon = L.icon({
+  iconUrl: 'image/ziad.png',
+  iconSize: [45, 45],
+  popupAnchor: [0, -20]
+});
 
 var ziadMarker = L.marker([51.5, 0], {icon: myIcon, zoom: 13}).addTo(mymap)
   .bindPopup('Je suis takieddine');
@@ -110,10 +110,6 @@ recup.addEventListener('dragend',function(e){
 //
 // inventaire1.appendChild(img_papier);
 
-// on ajoute l'inventaire en bas à gauche
-// L.Control.Watermark = L.Control.extend({
-//   onAdd: function(mymap) {
-//     var img = L.DomUtil.create('img');
 //
 //     img.src = 'image/inventaire.png';
 //     img.style.width = '350px';
@@ -126,8 +122,24 @@ recup.addEventListener('dragend',function(e){
 //       }
 //   });
 //
-//   L.control.watermark = function(opts) {
-//       return new L.Control.Watermark(opts);
-//   }
-//
-//   L.control.watermark({ position: 'bottomleft' }).addTo(mymap);
+//on ajoute l'inventaire en bas à gauche
+L.Control.Watermark = L.Control.extend({
+  onAdd: function(mymap) {
+    var img = L.DomUtil.create('img');
+
+    img.src = 'image/inventaire.png';
+    img.style.width = '350px';
+
+    return img;
+  },
+
+  onRemove: function(mymap) {
+      // Nothing to do here
+      }
+  });
+
+  L.control.watermark = function(opts) {
+      return new L.Control.Watermark(opts);
+  }
+
+  L.control.watermark({ position: 'bottomleft' }).addTo(mymap);
