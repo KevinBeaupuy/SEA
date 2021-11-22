@@ -40,7 +40,7 @@ appel('voiture')
 
 // on ajoute un élément sur la carte
 var myIcon = L.icon({
-  iconUrl: 'image/ziad.jpg',
+  iconUrl: 'image/ziad.png',
   iconSize: [45, 45],
   popupAnchor: [0, -20]
 });
