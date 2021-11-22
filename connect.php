@@ -1,6 +1,6 @@
 <?php
 //Connection à la BDD en local
-//$link = mysqli_connect('localhost', 'root', 'root', 'sea');
+// $link = mysqli_connect('localhost', 'root', 'root', 'sea');
 
 //Connection à la BDD
 $link = mysqli_connect('mysql-kevineuh.alwaysdata.net', 'kevineuh', 'root', 'kevineuh_sea');

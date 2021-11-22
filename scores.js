@@ -1,19 +1,22 @@
-
-fetch('scores_fetch.php', {
-})
-.then(r => r.json())
-.then(r => {
-    console.log(r);
-});
-
-
-
-// $.ajax({
-//   url: "scores_fetch.php",
-//   type: "POST",
-//   data: { text: $("p.unbroken").text() }
+//
+// fetch('scores_fetch.php', {
 // })
-//   .done(function( data,status ) {
-//     console.log(data)
-//     $("p.broken").html(data);
-//   });
+// .then(r => r.json())
+// .then(r => {
+//     console.log(r);
+// });
+
+
+
+$.ajax({
+  url: "scores_fetch.php",
+  type: "POST",
+  dataType: "json",
+  data: {}
+   // text: $("p#tab_score").text()
+})
+  .done(function( data,status ) {
+    
+    //Selecteur du tableau html
+    $("#tab_score").html(data);
+  });
