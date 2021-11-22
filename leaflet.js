@@ -28,14 +28,7 @@ function appel(param){
         async: true,         //asynchrone
         success: function(data,status){
           //Afficher l'image à ses coordonnées
-          console.log(data[0]["nom"]);
-          console.log(data[0]["x"]);
-          console.log(data[0]["y"]);
           const nom = data[0]["nom"];
-
-          // for (var valeur in data[0]) {
-          //   console.log(valeur);
-          //   console.log(data[valeur]);}
 
           console.log(`image/${nom}.png`);
           var myIcon = L.icon({
@@ -52,6 +45,13 @@ function appel(param){
 }
 appel("parfum")
 appel('voiture')
+appel('rhinoceros')
+appel('loi_belge')
+appel('kadhafi')
+appel('maison_familiale_sarkisov')
+appel('cheval')
+appel('salah')
+
 
 // on ajoute un élément sur la carte
 var myIcon = L.icon({
