@@ -21,31 +21,34 @@ function appel(param){
   $(document).ready(function(event){
 
     $.ajax({
-                url: "fetch.php",
-                type: "POST",
-                data: {"nom": param},
-                dataType: "json",
-                async: true,         //asynchrone
-                success: function(data,status){
-                  //Afficher l'image associée aux coordonnées dans data;
-                  console.log(typeof(data));
-                  console.log(data[0]);
+        url: "fetch.php",
+        type: "POST",
+        data: {"nom": param},
+        dataType: "json",
+        async: true,         //asynchrone
+        success: function(data,status){
+          //Afficher l'image à ses coordonnées
+          console.log(data[0]["nom"]);
+          console.log(data[0]["x"]);
+          console.log(data[0]["y"]);
+          const nom = data[0]["nom"];
 
-                  for (var valeur in data[0]) {console.log(valeur);}
+          // for (var valeur in data[0]) {
+          //   console.log(valeur);
+          //   console.log(data[valeur]);}
 
-                  console.log("image/{data[name]}.png");
-                  var myIcon = L.icon({
-                    iconUrl: 'image/{data[name]}.png',
-                    iconSize: [45, 45],
-                    popupAnchor: [0, -20]
-                  });
-                ;}
-
-
-
-
-            })
+          console.log(`image/${nom}.png`);
+          var myIcon = L.icon({
+            iconUrl: `image/${nom}.png`,
+            iconSize: [45, 45],
+            popupAnchor: [0, -20]
           });
+
+          var marker = L.marker([data[0]["x"], data[0]["y"]], {icon: myIcon, zoom: 13}).addTo(mymap)
+            .bindPopup(`Je suis ${nom}`);
+        ;}
+      })
+    });
 }
 appel("parfum")
 appel('voiture')
