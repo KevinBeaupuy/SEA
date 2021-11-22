@@ -29,18 +29,23 @@ function appel(param){
         success: function(data,status){
           //Afficher l'image à ses coordonnées
           console.log(data[0]["nom"]);
+          console.log(data[0]["x"]);
+          console.log(data[0]["y"]);
           const nom = data[0]["nom"];
 
           // for (var valeur in data[0]) {
           //   console.log(valeur);
           //   console.log(data[valeur]);}
 
-          console.log('image/'${nom}'.png');
+          console.log(`image/${nom}.png`);
           var myIcon = L.icon({
-            iconUrl: "image/data[name].png",
+            iconUrl: `image/${nom}.png`,
             iconSize: [45, 45],
             popupAnchor: [0, -20]
           });
+
+          var marker = L.marker([data[0]["x"], data[0]["y"]], {icon: myIcon, zoom: 13}).addTo(mymap)
+            .bindPopup(`Je suis ${nom}`);
         ;}
       })
     });
