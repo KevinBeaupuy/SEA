@@ -48,12 +48,26 @@ function appel(param){
             .bindPopup(`Je suis ${nom}`);
         ;}
       })
+      marker.addEventListener('click', function(){
+        console.log("sa marche ou pa");
+      })
     });
 }
+appel("cheval")
 appel("parfum")
 appel('voiture')
+appel('salah')
 
-// on ajoute un élément sur la carte
+
+
+
+
+
+
+
+
+
+//on ajoute un élément sur la carte
 var myIcon = L.icon({
   iconUrl: 'image/ziad.png',
   iconSize: [45, 45],
