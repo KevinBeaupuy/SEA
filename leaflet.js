@@ -8,16 +8,12 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   minZoom: 3,
 }).addTo(mymap);
 
-/*
-// Récupération bdd
-/*
-fetch('fetch.php', {
-})
-.then(r => r.json())
-.then(r => {
-    console.log(r);
-});*/
+
+// Ex : https://stackoverflow.com/questions/28685613/how-to-structure-ajax-call
+// explication de l'asynchrone : https://stackoverflow.com/questions/14220321/how-to-return-the-response-from-an-asynchronous-call?rq=1
+
 function appel(param){
+  //fetch un objet dans la bdd et renvoit ses attributs
   $(document).ready(function(event){
 
     $.ajax({
@@ -25,25 +21,29 @@ function appel(param){
         type: "POST",
         data: {"nom": param},
         dataType: "json",
-        async: true,         //asynchrone
+        async: true,         //asynchrone, précision pour certain navigateurs (pas ceux qui pilotent les navires hein)
         success: function(data,status){
-          //Afficher l'image à ses coordonnées
           const nom = data[0]["nom"];
 
-          console.log(`image/${nom}.png`);
-          var myIcon = L.icon({
-            iconUrl: `image/${nom}.png`,
-            iconSize: [45, 45],
-            popupAnchor: [0, -20]
-          });
-
-          var marker = L.marker([data[0]["x"], data[0]["y"]], {icon: myIcon, zoom: 13}).addTo(mymap)
-            .bindPopup(`Je suis ${nom}`);
+          return data[0]
         ;}
       })
     });
 }
-appel("parfum")
+
+function creerMarker(objet){
+  //Afficher l'image à ses coordonnées
+  var myIcon = L.icon({
+    iconUrl: `image/${objet["nom"]}.png`,
+    iconSize: [45, 45],
+    popupAnchor: [0, -20]
+  });
+  return L.marker([objet["x"], data["y"]], {icon: myIcon, zoom: 13}).addTo(mymap)
+    .bindPopup(`Je suis ${objet["nom"]}`);
+}
+
+parfum = appel("parfum")
+var marker = creerMarker(parfum)
 appel('voiture')
 appel('rhinoceros')
 appel('loi_belge')
