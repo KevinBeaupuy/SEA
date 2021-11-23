@@ -1,28 +1,88 @@
-body {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  /* grid-template-columns: repeat(5, 20%); */
-  grid-gap: 0px;
-  grid-template-rows: 8% 25% 25% 25% 14%;
-  min-height: 100vh;
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,700|Quattrocento:700');
+
+*{
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
-#container {
+body {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  border: solid 2px black;
-  margin-left: 200px;
-  margin-right:200px;
-  padding: 10px;
-  grid-area: 2/1/5/7;
+  grid-template-columns: 1fr 4fr 1fr;
+  grid-template-rows: 1fr 3fr 3fr 3fr 2fr;
+  height: 100vh;
+  width: 100vw;
+
+  font-family: 'Open Sans', sans-serif;
+  font-weight: lighter;
 }
 
 header {
-  grid-column: 1 /7;
+  grid-column: span 4;
   grid-row: 1;
   text-align:center;
 }
 
+footer {
+  grid-column: 1 / 7;
+  grid-row: 5;
+  text-align: right;
+	background-color: #DFE0E0;
+
+  padding-right: 10px;
+}
+
+#container {
+  grid-column: 2;
+  grid-row: 2/5;
+
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 4em;
+  grid-gap: 4px;
+  border: solid 2px black;
+  padding: 10px;
+}
+
+
+#map {
+  z-index: 1;
+  grid-row: 1/5;
+  grid-column: 1/3;
+}
+
+#scores {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+#inventaire {
+  grid-column: 1;
+  grid-row: 4;
+
+  display: grid;
+  grid-template-columns: repeat(7, 13%);
+  grid-template-rows: 100%;
+  grid-gap: 4px; */
+  padding-left:1em;
+
+  z-index: 3;
+
+  /* background: url(image/inventaire.PNG) no-repeat;
+  background-size: auto 100%; */
+
+}
+
+img {
+    height:100%;
+    /* object-fit:cover 100%; */
+    z-index: 1;
+
+}
+
+
+
+/*---------BOUTON----------*/
 .button {
   display:flex;
   justify-content:center;
@@ -56,33 +116,3 @@ header {
     box-shadow: inset -2px -2px 3px rgba(255, 255, 255, .6),
                 inset 2px 2px 3px rgba(0, 0, 0, .6);
 }
-
-
-#map {
-  grid-row: 1/5;
-  grid-column: 1/4;
-}
-
-#scores {
-  grid-column: 4;
-  grid-row: 2;
-}
-
-
-
-footer {
-  grid-column: 1 / 7;
-  grid-row: 5;
-  text-align: right;
-	background-color: #DFE0E0;
-
-  padding-right: 10px;
-}
-
- /* #inventaire1 {
-  background: red;
-  position:absolute;
-  z-index: 1;
-  width: 70%;
-  height: 70%;
-} */
