@@ -23,37 +23,47 @@ function appel(param){
         dataType: "json",
         async: true,         //asynchrone, précision pour certain navigateurs (pas ceux qui pilotent les navires hein)
         success: function(data,status){
-          const nom = data[0]["nom"];
+          //const nom = data[0]["nom"];
 
-          return data[0]
+          //this.nom = data[0]["nom"]
+          return (data[0])
         ;}
       })
-      marker.addEventListener('click', function(){
-        console.log("sa marche ou pa");
-      })
+
     });
-}
+};
+
+
 
 function creerMarker(objet){
   //Afficher l'image à ses coordonnées
+console.log('image/'+objet["nom"]+'.png');
   var myIcon = L.icon({
-    iconUrl: `image/${objet["nom"]}.png`,
+    iconUrl: 'image/'+objet["nom"]+'.png',
     iconSize: [45, 45],
     popupAnchor: [0, -20]
   });
-  return L.marker([objet["x"], data["y"]], {icon: myIcon, zoom: 13}).addTo(mymap)
-    .bindPopup(`Je suis ${objet["nom"]}`);
-}
+  L.marker([objet["x"], objet["y"]], {icon: myIcon, zoom: 13}).addTo(mymap)
+    .bindPopup('Je suis '+objet["nom"]);
+};
 
-parfum = appel("parfum")
-var marker = creerMarker(parfum)
-appel('voiture')
-appel('rhinoceros')
-appel('loi_belge')
-appel('kadhafi')
-appel('maison_familiale_sarkisov')
-appel('cheval')
-appel('salah')
+
+
+
+
+
+// var parfumm = appel("parfum");
+// var markerP = creerMarker(parfum);
+var voiture = appel('voiture');
+
+appel('rhinoceros');
+appel('loi_belge');
+appel('kadhafi');
+appel('maison_familiale_sarkisov');
+var cheval = appel('cheval');
+console.log(String(cheval))
+
+appel('salah');
 
 
 //on ajoute un élément sur la carte
@@ -80,6 +90,7 @@ var recup = L.marker([51.6,0.1],{icon: gueantIcon, zoom:9, draggable:true}).bind
 
 
 ziadMarker.addEventListener('click',function(){
+  mymap.removeLayer(ziadMarker);
 
     mymap.addEventListener('zoomend',function(){
         if (mymap.getZoom()>11){
