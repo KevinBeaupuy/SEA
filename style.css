@@ -9,14 +9,14 @@
 body {
   display: grid;
   grid-template-columns: 1fr 4fr 1fr;
-  grid-template-rows: 1fr 3fr 3fr 3fr 2fr;
+  grid-template-rows: 1fr 3fr 3fr 3fr 1fr;
   height: 100vh;
   width: 100vw;
 
   font-family: 'Open Sans', sans-serif;
   font-weight: lighter;
 
-  background-image: url('image/apple-touch-icon.png');
+  /* background-image: url('image/apple-touch-icon.png'); */
 }
 
 header {
@@ -76,10 +76,10 @@ footer {
   grid-row: 4;
 
   display: grid;
-  grid-template-columns: repeat(7, 13%);
+  grid-template-columns: repeat(7, 1fr);
   grid-template-rows: 100%;
-  grid-gap: 4px; */
-  padding-left:1em;
+  padding-left:4px;
+  padding-bottom: 4px;
 
   z-index: 3;
 
