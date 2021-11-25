@@ -95,7 +95,7 @@ img {
 }
 
 h2 {
-  grid-column: 2;
+  grid-column: 3;
   grid-row: 3;
   text-align: center  ;
 }
@@ -105,8 +105,8 @@ h2 {
 BOUTON----------------------------------------------------------------------------
 */
 .button {
-  /* grid-column: 2;
-  grid-row: 4; */
+  grid-column: 4;
+  grid-row: 4;
   margin: auto;
   display:flex;
   justify-content:center;

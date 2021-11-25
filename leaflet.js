@@ -23,27 +23,35 @@ function appel(param){
         async: true,         //asynchrone, précision pour certain navigateurs (pas ceux qui pilotent les navires hein)
         success: function(data,status){
           const nom = data[0]["nom"];
-          console.log(nom);
-          // console.log(data[0]["type"]);
           var marker = creerMarker(data[0]);
 
           //Si l'objet est récupérable, alors on l'ajoute ) l'inventaire en clickant (et il n'a pas de dialogue attaché)
           if (data[0]["type"] == "recuperable") {
-            //Pb : ça le modifie directement dans l'inventaire, sans faire de double click dessus ...
-            console.log("BONJOUR JE SUIS RECUPERABLE\n");
+            marker.addEventListener('click', function(){
+              addIconInventaire(data[0]["nom"]);
+              mymap.removeLayer(marker);
+              appel(data[0]["bloque"])
+            })
+
+
             // marker.on('dblclick', addIconInventaire(nom));
 
           } else if (data[0]["type"] == "deplacable"){
             //idk si on peut juste modifier le draggable en true sur un marker déjà créé ?
-            marker.bindPopup(`Attention je peux me déplacer !"`)
+            marker.bindPopup('Déplace moi !')
+            var estArrive = cibleMarker(data[0]);
+            while ! (estArrive){
+                var estArrive = cibleMarker(data[0]);
+            }
+            appel(data[0]["bloque"])
+
 
           } else {  //sinon, on affiche le dialogue attaché
-            marker.bindPopup(`Je suis ${data[0]["dialogue"]}`)
+            marker.bindPopup(`${data[0]["dialogue"]}`)
 
             //On supprime le popup si le niveau de zoom change
-            // marker.on('dblclick', addIconInventaire(nom));
             mymap.on('zoom',function(){
-              mymap.removeLayer(popup)
+              mymap.closePopup()
             })
           }
         ;}
@@ -51,22 +59,36 @@ function appel(param){
     });
 }
 
+function cibleMarker(objet, x1, y1){
+return (distance(x1,y1,objet["x_cible"],objet["y_cible"])<10000/objet["niv_zoom_min"])
+
+}
+
+function distance(x1, y1, x2, y2){
+  //donne la distance euclidienne
+  var carre = Math.pow(x1-x2,2) + Math.pow(y1-y2,2);
+  return Math.pow(carre,0.5);
+}
+
 function creerMarker(objet){
   //Créer un marker de l'objet à ses coordonnées, et l'affiche sur la carte
+  var typeObjet = objet["type"];
   var icon = L.icon({
     iconUrl: `image/${objet["nom"]}.png`,
     iconSize: [45, 45],
     popupAnchor: [0, -20]
   });
-  return L.marker([objet["x"], objet["y"]], {icon: icon, zoom: 13}).addTo(mymap);
+  return L.marker([objet["x"], objet["y"]], {icon: icon, zoom: 13, draggable: typeObjet=='deplacable'}).addTo(mymap);
 }
 
 function addIconInventaire(nom) {
   //Trouver un emplacement libre dans l'inventaire
   //Modifier le html pour afficher l'icon de l'objet récupéré
   const img = document.querySelector("#invA");
-  img.src = `image/icon_${nom}.png`;
+  img.src = `image/icons/icon_${nom}.png`;
 }
+
+
 
 appel('voiture');
 appel('rhinoceros');
@@ -75,6 +97,8 @@ appel('kadhafi');
 appel('maison_familiale_sarkisov');
 appel('cheval');
 appel('salah');
+appel('mandat_perquisition')
+
 
 
 // on ajoute un élément sur la carte
