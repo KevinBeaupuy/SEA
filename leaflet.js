@@ -1,8 +1,8 @@
 var mymap = L.map('map', {
-    zoomSnap: 0.8
-}).setView([51.505, 0], 13);
+    zoomSnap: 1
+}).setView([51.505, 0], 5);
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+L.tileLayer('http://tiles.lyrk.org/ls/{z}/{x}/{y}?apikey=982c82cc765f42cf950a57de0d891076', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   maxZoom: 19,
   minZoom: 3,
@@ -25,13 +25,26 @@ function appel(param){
           const nom = data[0]["nom"];
           var marker = creerMarker(data[0]);
 
+
+          mymap.addEventListener('zoomend',function(){
+              if (mymap.getZoom()>7){
+                  marker.addTo(mymap);
+              } else {
+                  marker.remove(mymap);
+              }
+
+          })
           //Si l'objet est récupérable, alors on l'ajoute ) l'inventaire en clickant (et il n'a pas de dialogue attaché)
           if (data[0]["type"] == "recuperable") {
             marker.addEventListener('click', function(){
               addIconInventaire(data[0]["nom"]);
+
               mymap.removeLayer(marker);
+              mymap.clearAllEventListeners('zoomend');
               appel(data[0]["bloque"])
             })
+
+
 
 
             // marker.on('dblclick', addIconInventaire(nom));
@@ -39,20 +52,26 @@ function appel(param){
           } else if (data[0]["type"] == "deplacable"){
             //idk si on peut juste modifier le draggable en true sur un marker déjà créé ?
             marker.bindPopup('Déplace moi !')
-            var estArrive = cibleMarker(data[0]);
-            while ! (estArrive){
-                var estArrive = cibleMarker(data[0]);
-            }
+            //var estArrive = cibleMarker(data[0]);
+            //while (!(estArrive)){
+                //var estArrive = cibleMarker(data[0]);
+            //} // idée : on test quand on lanche l'objet
             appel(data[0]["bloque"])
 
 
           } else {  //sinon, on affiche le dialogue attaché
-            marker.bindPopup(`${data[0]["dialogue"]}`)
+            marker.bindPopup(`${data[0]["dialogue"]}`);
+
+            marker.addEventListener('click', function() {
+              appel(data[0]["bloque"]);
+            })
+
 
             //On supprime le popup si le niveau de zoom change
             mymap.on('zoom',function(){
               mymap.closePopup()
             })
+
           }
         ;}
       })
@@ -63,6 +82,7 @@ function cibleMarker(objet, x1, y1){
 return (distance(x1,y1,objet["x_cible"],objet["y_cible"])<10000/objet["niv_zoom_min"])
 
 }
+
 
 function distance(x1, y1, x2, y2){
   //donne la distance euclidienne
@@ -98,8 +118,9 @@ appel('maison_familiale_sarkisov');
 appel('cheval');
 appel('salah');
 appel('mandat_perquisition')
-
-
+appel('roi')
+appel('fleurs')
+appel('ziad')
 
 // on ajoute un élément sur la carte
 var myIcon = L.icon({
@@ -107,10 +128,9 @@ var myIcon = L.icon({
   iconSize: [45, 45],
   popupAnchor: [0, -20]
 });
-
+/*
 var ziadMarker = L.marker([51.5, 0], {icon: myIcon, zoom: 13}).addTo(mymap)
   .bindPopup('Je suis takieddine');
-
 
 var gueantIcon = L.icon({
   iconUrl: 'image/gueant.png',
@@ -153,45 +173,4 @@ recup.addEventListener('dragend',function(e){
   if (x_souris>52) {
   alert("Attention, Claude a froid");}
 });
-
-
-
-// var papier = document.createElement("img_papier");
-// papier.src = "image/papier.png";
-// papier.style.maxHeight = "50px";
-//
-// inventaire1.appendChild(img_papier);
-
-//
-//     img.src = 'image/inventaire.png';
-//     img.style.width = '350px';
-//
-//     return img;
-//   },
-//
-//   onRemove: function(mymap) {
-//       // Nothing to do here
-//       }
-//   });
-//
-//on ajoute l'inventaire en bas à gauche
-// L.Control.Watermark = L.Control.extend({
-//   onAdd: function(mymap) {
-//     var img = L.DomUtil.create('img');
-//
-//     img.src = 'image/inventaire.png';
-//     img.style.width = '350px';
-//
-//     return img;
-//   },
-  //
-  // onRemove: function(mymap) {
-  //     // Nothing to do here
-  //     }
-  // });
-
-  // L.control.watermark = function(opts) {
-  //     return new L.Control.Watermark(opts);
-  // }
-  //
-  // L.control.watermark({ position: 'bottomleft' }).addTo(mymap);
+*/
