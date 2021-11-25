@@ -101,8 +101,9 @@ h2 {
 }
 
 
-
-/*---------BOUTON----------*/
+/*
+BOUTON----------------------------------------------------------------------------
+*/
 .button {
   margin: auto;
   display:flex;
@@ -139,3 +140,47 @@ h2 {
     box-shadow: inset -2px -2px 3px rgba(255, 255, 255, .6),
                 inset 2px 2px 3px rgba(0, 0, 0, .6);
 }
+
+
+/*
+Menu----------------------------------------------------------------------------
+*/
+#bandeau {
+	width=100%;
+  margin: 0 auto;
+  background-color: white;
+	position: sticky;
+	top: 0px;
+}
+
+#bandeau ul {
+	list-style-type: none;
+}
+
+#bandeau ul li {
+	float: left;
+	width: 25%;
+	text-aligh: center;
+  position: relative;
+}
+
+#bandeau ul::after{
+  content: "";
+  display: table;
+  clear: both;
+}
+
+#bandeau a {
+	/*text-align: center;*/
+	text-decoration: none;
+	color: black;
+	border-bottom: 2px solid transparent;
+	padding: 10px 0px;
+}
+
+#bandeau a:hover {
+	color: orange;
+	border-bottom: 2px solid gold;
+}
+
+/* https://www.pierre-giraud.com/html-css-apprendre-coder-cours/creation-menu-deroulant/ */

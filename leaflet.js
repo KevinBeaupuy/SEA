@@ -15,7 +15,6 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 function appel(param){
   //fetch un objet dans la bdd et renvoit ses attributs
   $(document).ready(function(event){
-
     $.ajax({
         url: "fetch.php",
         type: "POST",
@@ -24,36 +23,53 @@ function appel(param){
         async: true,         //asynchrone, précision pour certain navigateurs (pas ceux qui pilotent les navires hein)
         success: function(data,status){
           const nom = data[0]["nom"];
+          console.log(nom);
+          console.log(data[0]["type"]);
+          var marker = creerMarker(data[0]);
 
+          //Si l'objet est récupérable, alors on l'ajoute ) l'inventaire en clickant (et il n'a pas de dialogue attaché)
+          if (data[0]["type"] == "recuperable") {
+            console.log("BONJOUR JE SUIS RECUPERABLE\n")
+            marker.on('dblclick', addIconInventaire)
 
-          return data[0]
+          } else if (data[0]["type"] == "déplacable"){
+            //idk si on peut juste modifier le draggable en true sur un marker déjà créé ?
+
+          } else {  //sinon, on affiche le dialogue attaché
+            marker.bindPopup(`Je suis ${data[0]["dialogue"]}`)
+
+            //On supprime le popup si le niveau de zoom change
+            mymap.on('zoom',function(){
+              mymap.removeLayer(popup)
+            })
+          }
         ;}
       })
     });
 }
 
 function creerMarker(objet){
-  //Afficher l'image à ses coordonnées
-  var myIcon = L.icon({
+  //Créer un marker de l'objet à ses coordonnées, et l'affiche sur la carte
+  var icon = L.icon({
     iconUrl: `image/${objet["nom"]}.png`,
     iconSize: [45, 45],
     popupAnchor: [0, -20]
   });
-  return L.marker([objet["x"], data["y"]], {icon: myIcon, zoom: 13}).addTo(mymap)
-    .bindPopup(`Je suis ${objet["nom"]}`);
+  return L.marker([objet["x"], objet["y"]], {icon: icon, zoom: 13}).addTo(mymap);
 }
 
-var parfum = appel("parfum")
-console.log(parfum);
-var marker = creerMarker(parfum)
+function addIconInventaire(nom) {
+  //Trouver un emplacement libre dans l'inventaire
+  //Modifier le html pour afficher l'icon de l'objet récupéré
+}
 
-appel('voiture')
-appel('rhinoceros')
-appel('loi_belge')
-appel('kadhafi')
-appel('maison_familiale_sarkisov')
-appel('cheval')
-appel('salah')
+appel('voiture');
+appel('rhinoceros');
+appel('loi_belge');
+appel('kadhafi');
+appel('maison_familiale_sarkisov');
+appel('cheval');
+appel('salah');
 
 
 // on ajoute un élément sur la carte
@@ -65,7 +81,6 @@ var myIcon = L.icon({
 
 var ziadMarker = L.marker([51.5, 0], {icon: myIcon, zoom: 13}).addTo(mymap)
   .bindPopup('Je suis takieddine');
-
 
 
 var gueantIcon = L.icon({
