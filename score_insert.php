@@ -6,8 +6,8 @@
 
 
 
-    $requete = "INSERT INTO `user` (`pseudo`, `temps`, `score`) VALUES
-         ('maxime  ', '01:39:55', 9500),";
+    $requete = "INSERT INTO `scores` (`username`, `score`, `date`) VALUES
+         ('maxime  ', 'score', 9500),";
     $tab=[];
     if($result=mysqli_query($link,$requete)){
       while($ligne=mysqli_fetch_assoc($result)){

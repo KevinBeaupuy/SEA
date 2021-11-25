@@ -32,13 +32,15 @@
       <h1> Sarko's Escape Adventure </h1>
     </header>
 
-    <div id="container">
-      <div id="containerStart">
-        <a class="button" type="button" href="game.html">PLAY
-          <!-- Rest la BDD objets + reset les pseudos avec aucun score d'enregistré (c'est les joueurs qui n'ont pas terminé leur partie) -->
-        </a>
-        <h2>Réussiez-vous à mettre en prison notre cher Sarko ?</h2>
-      </div>
+    <div id="containerStart">
+      <form id="login" action="objets.php" method="POST">
+          <label> User: <input type="text" name="pseudo" id="pseudo"></label>
+          <!-- <button id="bouton" class="start">START!</button> -->
+        </form>
+      <a class="button" type="button" href="game.html">PLAY
+        <!-- Rest la BDD objets + reset les pseudos avec aucun score d'enregistré (c'est les joueurs qui n'ont pas terminé leur partie) -->
+      </a>
+      <h2>Réussiez-vous à mettre en prison notre cher Sarko ?</h2>
     </div>
 
     <footer>
