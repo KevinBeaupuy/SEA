@@ -24,21 +24,24 @@ function appel(param){
         success: function(data,status){
           const nom = data[0]["nom"];
           console.log(nom);
-          console.log(data[0]["type"]);
+          // console.log(data[0]["type"]);
           var marker = creerMarker(data[0]);
 
           //Si l'objet est récupérable, alors on l'ajoute ) l'inventaire en clickant (et il n'a pas de dialogue attaché)
           if (data[0]["type"] == "recuperable") {
-            console.log("BONJOUR JE SUIS RECUPERABLE\n")
-            marker.on('dblclick', addIconInventaire)
+            //Pb : ça le modifie directement dans l'inventaire, sans faire de double click dessus ...
+            console.log("BONJOUR JE SUIS RECUPERABLE\n");
+            // marker.on('dblclick', addIconInventaire(nom));
 
-          } else if (data[0]["type"] == "déplacable"){
+          } else if (data[0]["type"] == "deplacable"){
             //idk si on peut juste modifier le draggable en true sur un marker déjà créé ?
+            marker.bindPopup(`Attention je peux me déplacer !"`)
 
           } else {  //sinon, on affiche le dialogue attaché
             marker.bindPopup(`Je suis ${data[0]["dialogue"]}`)
 
             //On supprime le popup si le niveau de zoom change
+            // marker.on('dblclick', addIconInventaire(nom));
             mymap.on('zoom',function(){
               mymap.removeLayer(popup)
             })
@@ -61,6 +64,8 @@ function creerMarker(objet){
 function addIconInventaire(nom) {
   //Trouver un emplacement libre dans l'inventaire
   //Modifier le html pour afficher l'icon de l'objet récupéré
+  const img = document.querySelector("#invA");
+  img.src = `image/icon_${nom}.png`;
 }
 
 appel('voiture');
@@ -146,23 +151,23 @@ recup.addEventListener('dragend',function(e){
 //   });
 //
 //on ajoute l'inventaire en bas à gauche
-L.Control.Watermark = L.Control.extend({
-  onAdd: function(mymap) {
-    var img = L.DomUtil.create('img');
+// L.Control.Watermark = L.Control.extend({
+//   onAdd: function(mymap) {
+//     var img = L.DomUtil.create('img');
+//
+//     img.src = 'image/inventaire.png';
+//     img.style.width = '350px';
+//
+//     return img;
+//   },
+  //
+  // onRemove: function(mymap) {
+  //     // Nothing to do here
+  //     }
+  // });
 
-    img.src = 'image/inventaire.png';
-    img.style.width = '350px';
-
-    return img;
-  },
-
-  onRemove: function(mymap) {
-      // Nothing to do here
-      }
-  });
-
-  L.control.watermark = function(opts) {
-      return new L.Control.Watermark(opts);
-  }
-
-  L.control.watermark({ position: 'bottomleft' }).addTo(mymap);
+  // L.control.watermark = function(opts) {
+  //     return new L.Control.Watermark(opts);
+  // }
+  //
+  // L.control.watermark({ position: 'bottomleft' }).addTo(mymap);
