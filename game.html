@@ -20,21 +20,23 @@
   <body>
 
     <header>
+      <div id="bandeau">
+        <ul id="menu">
+          <li class="deroulant"><a href="http://www.localhost/">Recommencer</a></li>
+          <li class="deroulant"><a href="http://www.localhost/solution.html" target="_blank" rel="noopener noreferrer">Solution</a></li>
+          <li class="deroulant"><a href="http://www.localhost/apropos.html">A propos</a></li>
+          <li class="deroulant"><a href="http://www.localhost/scores.html">Scores</a></li>
+        </ul>
+      </div>
+
+
       <h1> Sarko's Escape Adventure </h1>
+
     </header>
 
     <div id="container">
-      <div id="map"></div>
-      <script src="leaflet.js"></script>
-
-      <div id="inventaire1">
-        bonjour
-      </div>
-
-      <div id="inventaire2">
-      </div>
-
-      <div id="inventaire3">
+      <div id="map">
+        <script src="leaflet.js"></script>
       </div>
 
       <div id ="scores">
@@ -45,6 +47,21 @@
 <!-- Faire le tableau des scores -->
         <div id="tab_score">
         <script src="scores.js"></script>
+        </div>
+
+      </div>
+
+      <!-- <div id="inventaire" background="image/inventaire.PNG"> -->
+      <div id="inventaire">
+        <!-- <img src="image/inventaire.PNG"> -->
+
+        <div id="inventaire1"><img id="invA" src="image/icons/icon_carte_presse.png"></div>
+        <div id="inventaire2"><img id="invB" src="image/icons/icon_parfum.png"></div>
+        <div id="invC" id="inventaire3"><img src="image/icons/icon_vide.png"></div>
+        <div id="inventaire4"><img src="image/icons/icon_vide.png"></div>
+        <div id="inventaire5"><img src="image/icons/icon_vide.png"></div>
+        <div id="inventaire6"><img src="image/icons/icon_vide.png"></div>
+        <div id="inventaire7"><img src="image/icons/icon_vide.png"></div>
       </div>
 
     </div>
