@@ -41,6 +41,7 @@ function appel(param){
 
               mymap.removeLayer(marker);
               mymap.clearAllEventListeners('zoomend');
+
               appel(data[0]["bloque"])
             })
 
@@ -50,20 +51,35 @@ function appel(param){
             // marker.on('dblclick', addIconInventaire(nom));
 
           } else if (data[0]["type"] == "deplacable"){
-            //idk si on peut juste modifier le draggable en true sur un marker déjà créé ?
-            marker.bindPopup('Déplace moi !')
+            marker.bindPopup('Déplace moi !');
             //var estArrive = cibleMarker(data[0]);
             //while (!(estArrive)){
                 //var estArrive = cibleMarker(data[0]);
             //} // idée : on test quand on lanche l'objet
-            appel(data[0]["bloque"])
+
+            marker.addEventListener('mouseup', function(){
+              mymap.clearAllEventListeners('zoomend');
+
+              var coordBrut = marker.getLatLng();
+              var coordString = coordBrut.toString();
+
+
+              if (cibleMarker(data[0],stringToCoordonnee(coordString)[0], stringToCoordonnee(coordString)[0])){
+                console.log("réussi");
+
+              appel(data[0]["bloque"])}})
 
 
           } else {  //sinon, on affiche le dialogue attaché
             marker.bindPopup(`${data[0]["dialogue"]}`);
 
             marker.addEventListener('click', function() {
-              appel(data[0]["bloque"]);
+              /*if (data[0]["bloque"])=="telephone" {
+                telephone(data[0])
+              }
+              else {*/
+              appel(data[0]["bloque"])
+
             })
 
 
@@ -78,11 +94,27 @@ function appel(param){
     });
 }
 
+
+
 function cibleMarker(objet, x1, y1){
-return (distance(x1,y1,objet["x_cible"],objet["y_cible"])<10000/objet["niv_zoom_min"])
+  //fonction a changé quand la colonne des x cibles sera des entiers et non plus des string
+  console.log(distance(x1,y1,objet["x_cible"],objet["y_cible"]));
+
+return (distance(x1,y1,parseInt(objet["x_cible"]),parseInt(objet["y_cible"]))<100)//00/parseInt(objet["niv_zoom_min"]))
 
 }
 
+function stringToCoordonnee(chaineCaractere){
+  //on localise les éléments indésirables dans la chaine de caractère
+  var premiereParenthese = chaineCaractere.indexOf("(");
+  var deuxiemeParenthese = chaineCaractere.indexOf(")");
+  var virgule = chaineCaractere.indexOf(",");
+
+  var x = chaineCaractere.substring(premiereParenthese+1,virgule);
+  var y = chaineCaractere.substring(virgule+1,deuxiemeParenthese);
+
+  return (x,y)
+}
 
 function distance(x1, y1, x2, y2){
   //donne la distance euclidienne
@@ -121,6 +153,7 @@ appel('mandat_perquisition')
 appel('roi')
 appel('fleurs')
 appel('ziad')
+appel('jfe')
 
 // on ajoute un élément sur la carte
 var myIcon = L.icon({
