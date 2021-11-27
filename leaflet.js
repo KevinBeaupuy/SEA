@@ -115,6 +115,15 @@ num.addEventListener('submit', function(){
   console.log(numero);
 })
 
+
+
+//pour faire apparaitre la popup
+
+
+//pour faire disparaitre la popup
+
+
+
 //calcul distance pour objets déplacables
 function deg2rad (angle) {
  return (angle / 180) * Math.PI;
@@ -133,7 +142,6 @@ function cibleMarker(objet, x1, y1){
   latMediapart = deg2rad(48.8506);
   lonMediapart = deg2rad(2.3798);
 
-
   var ds = Math.acos( Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1-lon2) );
   ds *= r; // c'est la distance à plat
 
@@ -145,7 +153,6 @@ function cibleMarker(objet, x1, y1){
   };
   return ds<10;
   //return (distance(parseInt(x1),parseInt(y1),parseInt(objet["x_cible"]),parseInt(objet["y_cible"]))<100)//00/parseInt(objet["niv_zoom_min"]))
-
 }
 
 function stringToCoordonnee(chaineCaractere){
@@ -178,11 +185,9 @@ function addIconInventaire(nom) {
   var i = 1;
   do {
     var img = document.querySelector(`#inv${i}`);
-    console.log(img.src);
-    console.log(i);
     i++;
 
-  } while (img.src !== "http://www.localhost/image/icons/icon_vide.png" && i<7)
+  } while (img.src !== "http://www.localhost/image/icons/icon_vide.png" && i<=7)
   img.src = `image/icons/icon_${nom}.png`;
 }
 
