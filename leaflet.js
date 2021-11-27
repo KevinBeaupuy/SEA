@@ -31,6 +31,8 @@ function appel(param){
         async: true,         //asynchrone, précision pour certain navigateurs (pas ceux qui pilotent les navires hein)
         success: function(data,status){
           const nom = data[0]["nom"];
+
+          //création du marker
           var marker = creerMarker(data[0]);
           console.log(data[0]);
 
@@ -41,7 +43,6 @@ function appel(param){
               } else {
                   marker.remove(mymap);
               }
-
           })
           //Si l'objet est récupérable, alors on l'ajoute ) l'inventaire en clickant (et il n'a pas de dialogue attaché)
           if (data[0]["type"] == "recuperable") {
@@ -49,13 +50,12 @@ function appel(param){
               console.log("passe par la");
               addIconInventaire(data[0]["nom"]);
 
-              //son
+              //son de la récupération d'objets
               var audio = document.getElementById("recupObjet");
               audio.play();
 
+              //Maintenant que l'objet a été utilisé, on le supprime et on appel le suivant
               mymap.removeLayer(marker);
-              //mymap.clearAllEventListeners('zoomend'); pk il y a ca ici ?
-
               appel(data[0]["bloque"])
             })
 
@@ -107,7 +107,7 @@ function appel(param){
     });
 }
 
-
+//Téléphone
 var num = document.getElementById('telephone');
 
 num.addEventListener('submit', function(){
@@ -115,7 +115,7 @@ num.addEventListener('submit', function(){
   console.log(numero);
 })
 
-
+//calcul distance pour objets déplacables
 function deg2rad (angle) {
  return (angle / 180) * Math.PI;
 }
@@ -161,6 +161,7 @@ function stringToCoordonnee(chaineCaractere){
 }
 
 
+//Autres fonctions utiles
 function creerMarker(objet){
   //Créer un marker de l'objet à ses coordonnées, et l'affiche sur la carte
   var typeObjet = objet["type"];
@@ -173,9 +174,15 @@ function creerMarker(objet){
 }
 
 function addIconInventaire(nom) {
-  //Trouver un emplacement libre dans l'inventaire
-  //Modifier le html pour afficher l'icon de l'objet récupéré
-  const img = document.querySelector("#invA");
+  //Ajoute l'objet dans le premier emplacement d'inventaire libre
+  var i = 1;
+  do {
+    var img = document.querySelector(`#inv${i}`);
+    console.log(img.src);
+    console.log(i);
+    i++;
+
+  } while (img.src !== "http://www.localhost/image/icons/icon_vide.png" && i<7)
   img.src = `image/icons/icon_${nom}.png`;
 }
 
