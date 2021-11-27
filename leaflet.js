@@ -16,6 +16,8 @@ var mediapartIcon = L.icon({
 
 var mediapart = L.marker([48.8506, 2.3798], {icon: mediapartIcon, zoom: 13}).addTo(mymap);
 
+var listeAffaires = ['libye','kazakhgate','karachi','reso_garantia','bygmalion','bettencourt'];
+
 
 // Ex : https://stackoverflow.com/questions/28685613/how-to-structure-ajax-call
 // explication de l'asynchrone : https://stackoverflow.com/questions/14220321/how-to-return-the-response-from-an-asynchronous-call?rq=1
@@ -23,6 +25,14 @@ var mediapart = L.marker([48.8506, 2.3798], {icon: mediapartIcon, zoom: 13}).add
 function appel(param){
   //fetch un objet dans la bdd et renvoit ses attributs
   if (!(param=="")){
+
+    if (listeAffaires.includes(param)){
+      mediapart.bindPopup("On dirait que tu as assez d'éléments pour cette affaire, viens me les donner !").openPopup();
+      changementAffaire(param);
+
+    }
+    else{
+
   $(document).ready(function(event){
     $.ajax({
         url: "fetch.php",
@@ -73,7 +83,6 @@ function appel(param){
               var coordString = coordBrut.toString();
 
               if (cibleMarker(data[0],stringToCoordonnee(coordString)[0], stringToCoordonnee(coordString)[1])){
-                console.log("reussi");
 
               appel(data[0]["bloque"])}})
 
@@ -100,7 +109,30 @@ function appel(param){
         ;}
       })
     });
-}}
+}}}
+
+/*
+function changementAffaire(nom){
+/*  var i = 2;
+  do {
+    var img = document.querySelector(`#inv${i}`);
+    i++;
+
+  } while (img.src !== "http://www.localhost/image/icons/icon_vide.png" && i<7)
+  img.src = `image/icons/icon_${nom}.png`;
+}*/
+/*
+  var i = 4;
+    var img = document.querySelector(`#inv${i}`);
+ while (img.src !== "http://www.localhost/image/icons/icon_vide.png" && i<7){
+
+   var img = document.getElementById(`#inv${i}`);
+   img.addEventListener('click', function(){
+     img.src = "http://www.localhost/image/icons/icon_vide.png"
+   })
+   i++;
+ }}
+*/
 
 //Téléphone
 var num = document.getElementById('telephone');
@@ -187,8 +219,6 @@ function addIconInventaire(nom) {
   var i = 1;
   do {
     var img = document.querySelector(`#inv${i}`);
-    console.log(img.src);
-    console.log(i);
     i++;
 
   } while (img.src !== "http://www.localhost/image/icons/icon_vide.png" && i<7)
@@ -207,7 +237,7 @@ appel('salah');
 appel('mandat_perquisition')
 appel('roi')
 appel('fleurs')
-appel('ziad')
+appel('gueant')
 appel('jfe')
 
 
