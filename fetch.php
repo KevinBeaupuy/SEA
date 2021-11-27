@@ -29,13 +29,8 @@ if($result=mysqli_query($link,$requete)){
   while($ligne=mysqli_fetch_assoc($result)){
     //tableau associatif
     $tab[]=$ligne;
-    // echo $ligne
   }
 }
 echo json_encode($tab);
-// if (sizeof($nom) != 0) {
-// }
-// else :
-//   echo "requête vide";
 
 ?>
