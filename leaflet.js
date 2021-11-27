@@ -8,6 +8,14 @@ L.tileLayer('http://tiles.lyrk.org/ls/{z}/{x}/{y}?apikey=982c82cc765f42cf950a57d
   minZoom: 3,
 }).addTo(mymap);
 
+var mediapartIcon = L.icon({
+  iconUrl: 'image/mediapart.png',
+  iconSize: [45, 45],
+  popupAnchor: [0, -20]
+});
+
+var mediapart = L.marker([48.8506, 2.3798], {icon: mediapartIcon, zoom: 13}).addTo(mymap);
+
 
 // Ex : https://stackoverflow.com/questions/28685613/how-to-structure-ajax-call
 // explication de l'asynchrone : https://stackoverflow.com/questions/14220321/how-to-return-the-response-from-an-asynchronous-call?rq=1
@@ -95,6 +103,14 @@ function appel(param){
 }
 
 
+var num = document.getElementById('telephone');
+
+num.addEventListener('submit', function(){
+  var numero = num.value;
+  console.log(numero);
+})
+
+
 function deg2rad (angle) {
  return (angle / 180) * Math.PI;
 }
@@ -102,23 +118,26 @@ function deg2rad (angle) {
 function cibleMarker(objet, x1, y1){
   // en partie repris du site https://dotclear.placeoweb.com/post/Formule-de-calcul-entre-2-points-wgs84-pour-calculer-la-distance-qui-separe-ces-deux-points
   //fonction a changer quand la colonne des x cibles sera des entiers et non plus des string
-  //console.log(x1);
-  // console.log(y1);
-  // console.log(objet["x_cible"]);
-  // console.log(objet["y_cible"]);
-
-
   var r = 6366;
-
 
   lat1 = deg2rad(parseInt(x1));
   lon1 = deg2rad(parseInt(y1));
   lat2 = deg2rad(parseInt(objet["x_cible"]));
   lon2 = deg2rad(parseInt(objet["y_cible"]));
 
+  latMediapart = deg2rad(48.8506);
+  lonMediapart = deg2rad(2.3798);
+
+
   var ds = Math.acos( Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1-lon2) );
-  ds = ds * r; // c'est la distance à plat
-  console.log(ds);
+  ds *= r; // c'est la distance à plat
+
+  var dsMediapart = Math.acos( Math.sin(lat1) * Math.sin(latMediapart) + Math.cos(lat1) * Math.cos(latMediapart) * Math.cos(lon1-lonMediapart) );
+  dsMediapart *= r;
+
+  if (dsMediapart < 100) {
+    mediapart.bindPopup("Ce n'est pas à nous que tu dois donner l'objet !").openPopup();
+  };
   return ds<10;
   //return (distance(parseInt(x1),parseInt(y1),parseInt(objet["x_cible"]),parseInt(objet["y_cible"]))<100)//00/parseInt(objet["niv_zoom_min"]))
 
@@ -170,13 +189,15 @@ appel('fleurs')
 appel('ziad')
 appel('jfe')
 
+
+/*
 // on ajoute un élément sur la carte
 var myIcon = L.icon({
   iconUrl: 'image/ziad.png',
   iconSize: [45, 45],
   popupAnchor: [0, -20]
 });
-/*
+
 var ziadMarker = L.marker([51.5, 0], {icon: myIcon, zoom: 13}).addTo(mymap)
   .bindPopup('Je suis takieddine');
 
