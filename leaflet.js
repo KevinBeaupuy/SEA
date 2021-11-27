@@ -49,6 +49,10 @@ function appel(param){
               console.log("passe par la");
               addIconInventaire(data[0]["nom"]);
 
+              //son
+              var audio = document.getElementById("recupObjet");
+              audio.play();
+
               mymap.removeLayer(marker);
               //mymap.clearAllEventListeners('zoomend'); pk il y a ca ici ?
 
