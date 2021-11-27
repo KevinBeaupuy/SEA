@@ -1,56 +1,219 @@
 var mymap = L.map('map', {
-    zoomSnap: 0.8
-}).setView([51.505, 0], 13);
+    zoomSnap: 1
+}).setView([51.505, 0], 5);
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+L.tileLayer('http://tiles.lyrk.org/ls/{z}/{x}/{y}?apikey=982c82cc765f42cf950a57de0d891076', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   maxZoom: 19,
   minZoom: 3,
 }).addTo(mymap);
 
-/*
-// Récupération bdd
-/*
-fetch('fetch.php', {
-})
-.then(r => r.json())
-.then(r => {
-    console.log(r);
-});*/
-function appel(param){
-  $(document).ready(function(event){
-  console.log("test fetch 1");
-
-    $.ajax({
-                url: "fetch.php",
-                type: "POST",
-                data: {"nom": param},
-                dataType: "json",
-                async: true,
-                success: function(data,status){
-                  //Afficher l'image associée aux coordonnées dans data;
-                  console.log(data);
-                  console.log("test fetch 2");}
-
-            })
-          });
-}
-appel("parfum")
-appel('voiture')
-
-// on ajoute un élément sur la carte
-var myIcon = L.icon({
-  iconUrl: 'image/takieddine.jpg',
+var mediapartIcon = L.icon({
+  iconUrl: 'image/mediapart.png',
   iconSize: [45, 45],
   popupAnchor: [0, -20]
 });
 
-var ziadMarker = L.marker([51.5, 0], {icon: myIcon},{zoom: 13}).addTo(mymap)
+var mediapart = L.marker([48.8506, 2.3798], {icon: mediapartIcon, zoom: 13}).addTo(mymap);
+
+
+// Ex : https://stackoverflow.com/questions/28685613/how-to-structure-ajax-call
+// explication de l'asynchrone : https://stackoverflow.com/questions/14220321/how-to-return-the-response-from-an-asynchronous-call?rq=1
+
+function appel(param){
+  //fetch un objet dans la bdd et renvoit ses attributs
+  $(document).ready(function(event){
+    $.ajax({
+        url: "fetch.php",
+        type: "POST",
+        data: {"nom": param},
+        dataType: "json",
+        async: true,         //asynchrone, précision pour certain navigateurs (pas ceux qui pilotent les navires hein)
+        success: function(data,status){
+          const nom = data[0]["nom"];
+
+          //création du marker
+          var marker = creerMarker(data[0]);
+          console.log(data[0]);
+
+
+          mymap.addEventListener('zoomend',function(){
+              if (mymap.getZoom()>7){
+                  marker.addTo(mymap);
+              } else {
+                  marker.remove(mymap);
+              }
+          })
+          //Si l'objet est récupérable, alors on l'ajoute ) l'inventaire en clickant (et il n'a pas de dialogue attaché)
+          if (data[0]["type"] == "recuperable") {
+            marker.addEventListener('click', function(){
+              console.log("passe par la");
+              addIconInventaire(data[0]["nom"]);
+
+              //son de la récupération d'objets
+              var audio = document.getElementById("recupObjet");
+              audio.play();
+
+              //Maintenant que l'objet a été utilisé, on le supprime et on appel le suivant
+              mymap.removeLayer(marker);
+              appel(data[0]["bloque"])
+            })
+
+
+
+
+            // marker.on('dblclick', addIconInventaire(nom));
+
+          } else if (data[0]["type"] == "deplacable"){
+            marker.bindPopup('Déplace moi !');
+            //var estArrive = cibleMarker(data[0]);
+            //while (!(estArrive)){
+                //var estArrive = cibleMarker(data[0]);
+            //} // idée : on test quand on lanche l'objet
+
+            marker.addEventListener('mouseup', function(){
+              mymap.clearAllEventListeners('zoomend');
+
+              var coordBrut = marker.getLatLng();
+              var coordString = coordBrut.toString();
+
+              if (cibleMarker(data[0],stringToCoordonnee(coordString)[0], stringToCoordonnee(coordString)[1])){
+                console.log("reussi");
+
+              appel(data[0]["bloque"])}})
+
+
+          } else {  //sinon, on affiche le dialogue attaché
+            marker.bindPopup(`${data[0]["dialogue"]}`);
+
+            marker.addEventListener('click', function() {
+              /*if (data[0]["bloque"])=="telephone" {
+                telephone(data[0])
+              }
+              else {*/
+              appel(data[0]["bloque"])
+
+            })
+
+
+            //On supprime le popup si le niveau de zoom change
+            mymap.on('zoom',function(){
+              mymap.closePopup()
+            })
+
+          }
+        ;}
+      })
+    });
+}
+
+//Téléphone
+var num = document.getElementById('telephone');
+
+num.addEventListener('submit', function(){
+  var numero = num.value;
+  console.log(numero);
+})
+
+//calcul distance pour objets déplacables
+function deg2rad (angle) {
+ return (angle / 180) * Math.PI;
+}
+
+function cibleMarker(objet, x1, y1){
+  // en partie repris du site https://dotclear.placeoweb.com/post/Formule-de-calcul-entre-2-points-wgs84-pour-calculer-la-distance-qui-separe-ces-deux-points
+  //fonction a changer quand la colonne des x cibles sera des entiers et non plus des string
+  var r = 6366;
+
+  lat1 = deg2rad(parseInt(x1));
+  lon1 = deg2rad(parseInt(y1));
+  lat2 = deg2rad(parseInt(objet["x_cible"]));
+  lon2 = deg2rad(parseInt(objet["y_cible"]));
+
+  latMediapart = deg2rad(48.8506);
+  lonMediapart = deg2rad(2.3798);
+
+
+  var ds = Math.acos( Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1-lon2) );
+  ds *= r; // c'est la distance à plat
+
+  var dsMediapart = Math.acos( Math.sin(lat1) * Math.sin(latMediapart) + Math.cos(lat1) * Math.cos(latMediapart) * Math.cos(lon1-lonMediapart) );
+  dsMediapart *= r;
+
+  if (dsMediapart < 100) {
+    mediapart.bindPopup("Ce n'est pas à nous que tu dois donner l'objet !").openPopup();
+  };
+  return ds<10;
+  //return (distance(parseInt(x1),parseInt(y1),parseInt(objet["x_cible"]),parseInt(objet["y_cible"]))<100)//00/parseInt(objet["niv_zoom_min"]))
+
+}
+
+function stringToCoordonnee(chaineCaractere){
+  //on localise les éléments indésirables dans la chaine de caractère
+  var premiereParenthese = chaineCaractere.indexOf("(");
+  var deuxiemeParenthese = chaineCaractere.indexOf(")");
+  var virgule = chaineCaractere.indexOf(",");
+
+  var x = chaineCaractere.substring(premiereParenthese+1,virgule);
+  var y = chaineCaractere.substring(virgule+1,deuxiemeParenthese);
+
+  return [x,y]
+}
+
+
+//Autres fonctions utiles
+function creerMarker(objet){
+  //Créer un marker de l'objet à ses coordonnées, et l'affiche sur la carte
+  var typeObjet = objet["type"];
+  var icon = L.icon({
+    iconUrl: `image/${objet["nom"]}.png`,
+    iconSize: [45, 45],
+    popupAnchor: [0, -20]
+  });
+  return L.marker([objet["x"], objet["y"]], {icon: icon, zoom: 13, draggable: typeObjet=='deplacable'}).addTo(mymap);
+}
+
+function addIconInventaire(nom) {
+  //Ajoute l'objet dans le premier emplacement d'inventaire libre
+  var i = 1;
+  do {
+    var img = document.querySelector(`#inv${i}`);
+    console.log(img.src);
+    console.log(i);
+    i++;
+
+  } while (img.src !== "http://www.localhost/image/icons/icon_vide.png" && i<7)
+  img.src = `image/icons/icon_${nom}.png`;
+}
+
+
+
+appel('voiture');
+appel('rhinoceros');
+appel('loi_belge');
+appel('kadhafi');
+appel('maison_familiale_sarkisov');
+appel('cheval');
+appel('salah');
+appel('mandat_perquisition')
+appel('roi')
+appel('fleurs')
+appel('ziad')
+appel('jfe')
+
+
+/*
+// on ajoute un élément sur la carte
+var myIcon = L.icon({
+  iconUrl: 'image/ziad.png',
+  iconSize: [45, 45],
+  popupAnchor: [0, -20]
+});
+
+var ziadMarker = L.marker([51.5, 0], {icon: myIcon, zoom: 13}).addTo(mymap)
   .bindPopup('Je suis takieddine');
 
-
-
-var guantIcon = L.icon({
+var gueantIcon = L.icon({
   iconUrl: 'image/gueant.png',
   iconSize: [45, 45],
   popupAnchor: [0, -20]
@@ -58,7 +221,7 @@ var guantIcon = L.icon({
 
 
 var bouton_recuperer ='<button id="bouton_recup" ' + '>Récupère moi </button>';
-var recup = L.marker([51.6,0.1],{icon: guantIcon}, {zoom:9}).bindPopup(bouton_recuperer);
+var recup = L.marker([51.6,0.1],{icon: gueantIcon, zoom:9, draggable:true}).bindPopup(bouton_recuperer);
 
 
 ziadMarker.addEventListener('click',function(){
@@ -74,30 +237,21 @@ ziadMarker.addEventListener('click',function(){
 
 });
 
-var papier = document.createElement("papier");
-papier.src = "image/papier.png";
-papier.style.maxHeight = "50px";
 
-//.appendChild(img_saum);
+recup.addEventListener('dragend',function(e){
+  var coord = recup.getLatLng() ;
+  //on transforme les coordonnées en chaine de caractère
+  var coord2 = coord.toString();
 
-// on ajoute l'inventaire en bas à gauche
-L.Control.Watermark = L.Control.extend({
-  onAdd: function(mymap) {
-    var img = L.DomUtil.create('img');
+  //on localise les éléments indésirables dans la chaine de caractère
+  var premiereParenthese = coord2.indexOf("(");
+  var deuxiemeParenthese = coord2.indexOf(")");
+  var virgule = coord2.indexOf(",");
 
-    img.src = 'image/inventaire.png';
-    img.style.width = '350px';
+  var x_souris = coord2.substring(premiereParenthese+1,virgule);
+  var y_souris = coord2.substring(virgule+1,deuxiemeParenthese);
 
-    return img;
-  },
-
-  onRemove: function(mymap) {
-      // Nothing to do here
-      }
-  });
-
-  L.control.watermark = function(opts) {
-      return new L.Control.Watermark(opts);
-  }
-
-  L.control.watermark({ position: 'bottomleft' }).addTo(mymap);
+  if (x_souris>52) {
+  alert("Attention, Claude a froid");}
+});
+*/

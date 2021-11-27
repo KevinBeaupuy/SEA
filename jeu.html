@@ -16,15 +16,18 @@
       integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
       crossorigin=""></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  </head>
 
+
+
+  </head>
   <body>
 
     <header>
+      <!-- <img id="logo" src="image/sea_logo5.png"> -->
       <div id="bandeau">
         <ul id="menu">
           <li><img src="image/sea_logo.png"></li>
-          <li><a class="active" href="http://www.localhost/">Accueil</a></li>
+          <li><a href="http://www.localhost/">Accueil</a></li>
           <li><a href="/solution.html" target="_blank" rel="noopener noreferrer">Solution</a></li>
           <li><a href="/scores.html">Scores</a></li>
           <li style="float:right"><a href="apropos.html">À propos</a></li>
@@ -32,17 +35,46 @@
       </div>
 
       <h1> Sarko's Escape Adventure </h1>
+
     </header>
 
-    <div id="containerStart">
-      <form id="login" action="objets.php" method="POST">
-          <label> User: <input type="text" name="pseudo" id="pseudo"></label>
-          <!-- <button id="bouton" class="start">START!</button> -->
-        </form>
-      <a class="button" type="button" href="jeu.html">JOUER
-        <!-- Rest la BDD objets + reset les pseudos avec aucun score d'enregistré (c'est les joueurs qui n'ont pas terminé leur partie) -->
-      </a>
-      <h2>Réussiez-vous à mettre en prison notre cher Sarko ?</h2>
+    <div id="container">
+
+      <form id="telephone">
+        <input type="tel" placeholder="06 01 02 03 04" pattern="[0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2} [0-9]{2}" required>
+        <input type="submit" value="Téléphoner">
+      </form>
+
+      <div id="map"><script src="leaflet.js"></script></div>
+      <div id="carnet"><img src="image/carnet.png"></div>
+
+      <div id ="bestScores">
+        <div id="tab_score">
+        <script src="scores.js"></script>
+        </div>
+
+      </div>
+
+      <div id="inventaire">
+        <div id="inventaire1"><img id="inv1" src="image/icons/icon_carte_presse.png"></div>
+        <div id="inventaire2"><img id="inv2" src="image/icons/icon_parfum.png"></div>
+        <div id="inventaire3"><img id="inv3" src="image/icons/icon_vide.png"></div>
+        <div id="inventaire5"><img id="inv4" src="image/icons/icon_vide.png"></div>
+        <div id="inventaire4"><img id="inv5" src="image/icons/icon_vide.png"></div>
+        <div id="inventaire6"><img id="inv6" src="image/icons/icon_vide.png"></div>
+        <div id="inventaire7"><img id="inv7" src="image/icons/icon_vide.png"></div>
+      </div>
+
+
+      <div>
+        <audio id="recupObjet"><source src="son/s1.wav" type="audio/mpeg"></audio>
+        <audio id="oui" controls hidden><source src="son/s1.mp3" type="audio/mpeg"></audio>
+      </div>
+
+
+
+
+
     </div>
 
     <footer>
