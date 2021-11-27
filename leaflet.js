@@ -24,6 +24,7 @@ function appel(param){
         success: function(data,status){
           const nom = data[0]["nom"];
           var marker = creerMarker(data[0]);
+          console.log(data[0]);
 
 
           mymap.addEventListener('zoomend',function(){
