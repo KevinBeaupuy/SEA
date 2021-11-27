@@ -8,17 +8,15 @@ L.tileLayer('http://tiles.lyrk.org/ls/{z}/{x}/{y}?apikey=982c82cc765f42cf950a57d
   minZoom: 3,
 }).addTo(mymap);
 
+//Premier objet chargé en même temps que le début du jeu
+//Celui ci restera d'ailleurs permanent
 var mediapartIcon = L.icon({
   iconUrl: 'image/mediapart.png',
   iconSize: [45, 45],
   popupAnchor: [0, -20]
 });
-
 var mediapart = L.marker([48.8506, 2.3798], {icon: mediapartIcon, zoom: 13}).addTo(mymap);
 
-
-// Ex : https://stackoverflow.com/questions/28685613/how-to-structure-ajax-call
-// explication de l'asynchrone : https://stackoverflow.com/questions/14220321/how-to-return-the-response-from-an-asynchronous-call?rq=1
 
 function appel(param){
   //fetch un objet dans la bdd et renvoit ses attributs
@@ -35,8 +33,6 @@ function appel(param){
 
           //création du marker
           var marker = creerMarker(data[0]);
-
-
           mymap.addEventListener('zoomend',function(){
               if (mymap.getZoom()>7){
                   marker.addTo(mymap);
@@ -44,7 +40,7 @@ function appel(param){
                   marker.remove(mymap);
               }
           })
-          //Si l'objet est récupérable, alors on l'ajoute ) l'inventaire en clickant (et il n'a pas de dialogue attaché)
+          //Si l'objet est récupérable, alors on l'ajoute à l'inventaire en clickant
           if (data[0]["type"] == "recuperable") {
             marker.addEventListener('click', function(){
               addIconInventaire(data[0]["nom"]);
@@ -58,11 +54,7 @@ function appel(param){
               appel(data[0]["bloque"])
             })
 
-
-
-
-            // marker.on('dblclick', addIconInventaire(nom));
-
+          //Si l'objet est déplaçable
           } else if (data[0]["type"] == "deplacable"){
             marker.bindPopup('Déplace moi !');
 
@@ -75,28 +67,26 @@ function appel(param){
               if (cibleMarker(data[0],stringToCoordonnee(coordString)[0], stringToCoordonnee(coordString)[1])){
                 console.log("reussi");
 
-              appel(data[0]["bloque"])}})
+              appel(data[0]["bloque"]);
+              }
+            })
 
-
-          } else {  //sinon, on affiche le dialogue attaché
+          //Sinon, on affiche le dialogue attaché
+          } else {
             marker.bindPopup(`${data[0]["dialogue"]}`);
-
             marker.addEventListener('click', function() {
               /*if (data[0]["bloque"])=="telephone" {
                 telephone(data[0])
               }
               else {*/
-              appel(data[0]["bloque"])
-
+              appel(data[0]["bloque"]);
             })
-
-
             //On ferme le popup si le niveau de zoom change
             mymap.on('zoom',function(){
               mymap.closePopup()
             })
-
           }
+          // appel(data[0]["bloque"])
         ;}
       })
     });
@@ -107,13 +97,17 @@ var num = document.getElementById('telephone');
 var boutonTel = document.getElementById('boutonTel');
 
 boutonTel.addEventListener('click', function(){
-
+  var popup = document.querySelector(`.popup`);
   var numero = num.value;
+  console.log(popup.style.display);
+  popup.style.display = "block";
+
 
   if (numero == "06 41 43 45 47"){//barbara
     appel("ecole_entpe");
     appel("ecole_ensg");
-    appel("ecole_enm")
+    appel("ecole_enm");
+
   }
   if (numero == "06 77 86 35 42"){//roi
     appel("roi")
@@ -121,7 +115,6 @@ boutonTel.addEventListener('click', function(){
   if (numero == "06 57 59 43 83"){//russe
     appel("voiture")
   }
-
 })
 
 

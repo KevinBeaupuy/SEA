@@ -237,6 +237,7 @@ POPUP---------------------------------------------------------------------------
 */
 
 .popup {
+  display: none;
   text-align: center;
   font-family: monospace;
   /* overflow: hidden; */
