@@ -37,10 +37,11 @@ function appel(param){
           //Si l'objet est récupérable, alors on l'ajoute ) l'inventaire en clickant (et il n'a pas de dialogue attaché)
           if (data[0]["type"] == "recuperable") {
             marker.addEventListener('click', function(){
+              console.log("passe par la");
               addIconInventaire(data[0]["nom"]);
 
               mymap.removeLayer(marker);
-              mymap.clearAllEventListeners('zoomend');
+              //mymap.clearAllEventListeners('zoomend'); pk il y a ca ici ?
 
               appel(data[0]["bloque"])
             })
@@ -63,9 +64,8 @@ function appel(param){
               var coordBrut = marker.getLatLng();
               var coordString = coordBrut.toString();
 
-
-              if (cibleMarker(data[0],stringToCoordonnee(coordString)[0], stringToCoordonnee(coordString)[0])){
-                console.log("réussi");
+              if (cibleMarker(data[0],stringToCoordonnee(coordString)[0], stringToCoordonnee(coordString)[1])){
+                console.log("reussi");
 
               appel(data[0]["bloque"])}})
 
@@ -95,12 +95,32 @@ function appel(param){
 }
 
 
+function deg2rad (angle) {
+ return (angle / 180) * Math.PI;
+}
 
 function cibleMarker(objet, x1, y1){
-  //fonction a changé quand la colonne des x cibles sera des entiers et non plus des string
-  console.log(distance(x1,y1,objet["x_cible"],objet["y_cible"]));
+  // en partie repris du site https://dotclear.placeoweb.com/post/Formule-de-calcul-entre-2-points-wgs84-pour-calculer-la-distance-qui-separe-ces-deux-points
+  //fonction a changer quand la colonne des x cibles sera des entiers et non plus des string
+  //console.log(x1);
+  // console.log(y1);
+  // console.log(objet["x_cible"]);
+  // console.log(objet["y_cible"]);
 
-return (distance(x1,y1,parseInt(objet["x_cible"]),parseInt(objet["y_cible"]))<100)//00/parseInt(objet["niv_zoom_min"]))
+
+  var r = 6366;
+
+
+  lat1 = deg2rad(parseInt(x1));
+  lon1 = deg2rad(parseInt(y1));
+  lat2 = deg2rad(parseInt(objet["x_cible"]));
+  lon2 = deg2rad(parseInt(objet["y_cible"]));
+
+  var ds = Math.acos( Math.sin(lat1) * Math.sin(lat2) + Math.cos(lat1) * Math.cos(lat2) * Math.cos(lon1-lon2) );
+  ds = ds * r; // c'est la distance à plat
+  console.log(ds);
+  return ds<10;
+  //return (distance(parseInt(x1),parseInt(y1),parseInt(objet["x_cible"]),parseInt(objet["y_cible"]))<100)//00/parseInt(objet["niv_zoom_min"]))
 
 }
 
@@ -113,14 +133,9 @@ function stringToCoordonnee(chaineCaractere){
   var x = chaineCaractere.substring(premiereParenthese+1,virgule);
   var y = chaineCaractere.substring(virgule+1,deuxiemeParenthese);
 
-  return (x,y)
+  return [x,y]
 }
 
-function distance(x1, y1, x2, y2){
-  //donne la distance euclidienne
-  var carre = Math.pow(x1-x2,2) + Math.pow(y1-y2,2);
-  return Math.pow(carre,0.5);
-}
 
 function creerMarker(objet){
   //Créer un marker de l'objet à ses coordonnées, et l'affiche sur la carte
