@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <title>Sarko's Escape Adventure</title>
 
-    <link rel="apple-touch-icon" sizes="180x180" href="image/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="image/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="image/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="image/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="image/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="image/favicon/favicon-16x16.png">
     <link rel="manifest" href="image/site.webmanifest">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
@@ -16,19 +16,23 @@
       integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
       crossorigin=""></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+
   </head>
   <body>
 
     <header>
+      <!-- <img id="logo" src="image/sea_logo5.png"> -->
       <div id="bandeau">
         <ul id="menu">
-          <li class="deroulant"><a href="http://www.localhost/">Recommencer</a></li>
-          <li class="deroulant"><a href="http://www.localhost/solution.html" target="_blank" rel="noopener noreferrer">Solution</a></li>
-          <li class="deroulant"><a href="http://www.localhost/apropos.html">A propos</a></li>
-          <li class="deroulant"><a href="http://www.localhost/scores.html">Scores</a></li>
+          <li><img src="image/sea_logo.png"></li>
+          <li><a href="http://www.localhost/">Accueil</a></li>
+          <li><a href="/solution.html" target="_blank" rel="noopener noreferrer">Solution</a></li>
+          <li><a href="/scores.html">Scores</a></li>
+          <li style="float:right"><a href="apropos.html">À propos</a></li>
         </ul>
       </div>
-
 
       <h1> Sarko's Escape Adventure </h1>
 
@@ -39,25 +43,21 @@
         <script src="leaflet.js"></script>
       </div>
 
-      <div id ="scores">
-        <form id="form" action="objets.php" method="POST">
-            <label> User: <input type="text" name="pseudo" id="pseudo"></label>
-            <button id="bouton" class="start">START!</button>
+      <div id="carnet">
+        <img src="image/carnet.png">
+      </div>
 
-<!-- Faire le tableau des scores -->
+      <div id ="bestScores">
         <div id="tab_score">
         <script src="scores.js"></script>
         </div>
 
       </div>
 
-      <!-- <div id="inventaire" background="image/inventaire.PNG"> -->
       <div id="inventaire">
-        <!-- <img src="image/inventaire.PNG"> -->
-
-        <div id="inventaire1"><img id="invA" src="image/icons/icon_carte_presse.png"></div>
-        <div id="inventaire2"><img id="invB" src="image/icons/icon_parfum.png"></div>
-        <div id="invC" id="inventaire3"><img src="image/icons/icon_vide.png"></div>
+        <div id="inventaire1"><img src="image/icons/icon_carte_presse.png"></div>
+        <div id="inventaire2"><img src="image/icons/icon_parfum.png"></div>
+        <div id="inventaire3"><img src="image/icons/icon_vide.png"></div>
         <div id="inventaire4"><img src="image/icons/icon_vide.png"></div>
         <div id="inventaire5"><img src="image/icons/icon_vide.png"></div>
         <div id="inventaire6"><img src="image/icons/icon_vide.png"></div>

@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <title>Sarko's Escape Adventure</title>
 
-    <link rel="apple-touch-icon" sizes="180x180" href="image/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="image/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="image/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="image/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="image/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="image/favicon/favicon-16x16.png">
     <link rel="manifest" href="image/site.webmanifest">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
@@ -23,22 +23,26 @@
     <header>
       <div id="bandeau">
         <ul id="menu">
-          <li class="deroulant"><a href="http://www.localhost/">Recommencer</a></li>
-          <li class="deroulant"><a href="http://www.localhost/solution.html" target="_blank" rel="noopener noreferrer">Solution</a></li>
-          <li class="deroulant"><a href="http://www.localhost/apropos.html">A propos</a></li>
-          <li class="deroulant"><a href="http://www.localhost/scores.html">Scores</a></li>
+          <li><img src="image/sea_logo.png"></li>
+          <li><a class="active" href="http://www.localhost/">Accueil</a></li>
+          <li><a href="/solution.html" target="_blank" rel="noopener noreferrer">Solution</a></li>
+          <li><a href="/scores.html">Scores</a></li>
+          <li style="float:right"><a href="apropos.html">À propos</a></li>
         </ul>
       </div>
+
       <h1> Sarko's Escape Adventure </h1>
     </header>
 
-    <div id="container">
-      <div id="containerStart">
-        <a class="button" type="button" href="game.html">PLAY
-          <!-- Rest la BDD objets + reset les pseudos avec aucun score d'enregistré (c'est les joueurs qui n'ont pas terminé leur partie) -->
-        </a>
-        <h2>Réussiez-vous à mettre en prison notre cher Sarko ?</h2>
-      </div>
+    <div id="containerStart">
+      <form id="login" action="objets.php" method="POST">
+          <label> User: <input type="text" name="pseudo" id="pseudo"></label>
+          <!-- <button id="bouton" class="start">START!</button> -->
+        </form>
+      <a class="button" type="button" href="jeu.html">JOUER
+        <!-- Rest la BDD objets + reset les pseudos avec aucun score d'enregistré (c'est les joueurs qui n'ont pas terminé leur partie) -->
+      </a>
+      <h2>Réussiez-vous à mettre en prison notre cher Sarko ?</h2>
     </div>
 
     <footer>

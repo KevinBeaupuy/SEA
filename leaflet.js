@@ -1,8 +1,8 @@
 var mymap = L.map('map', {
-    zoomSnap: 0.8
-}).setView([51.505, 0], 13);
+    zoomSnap: 1
+}).setView([51.505, 0], 5);
 
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+L.tileLayer('http://tiles.lyrk.org/ls/{z}/{x}/{y}?apikey=982c82cc765f42cf950a57de0d891076', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   maxZoom: 19,
   minZoom: 3,
@@ -23,50 +23,124 @@ function appel(param){
         async: true,         //asynchrone, précision pour certain navigateurs (pas ceux qui pilotent les navires hein)
         success: function(data,status){
           const nom = data[0]["nom"];
-          console.log(nom);
-          // console.log(data[0]["type"]);
           var marker = creerMarker(data[0]);
 
+
+          mymap.addEventListener('zoomend',function(){
+              if (mymap.getZoom()>7){
+                  marker.addTo(mymap);
+              } else {
+                  marker.remove(mymap);
+              }
+
+          })
           //Si l'objet est récupérable, alors on l'ajoute ) l'inventaire en clickant (et il n'a pas de dialogue attaché)
           if (data[0]["type"] == "recuperable") {
-            //Pb : ça le modifie directement dans l'inventaire, sans faire de double click dessus ...
-            console.log("BONJOUR JE SUIS RECUPERABLE\n");
+            marker.addEventListener('click', function(){
+              addIconInventaire(data[0]["nom"]);
+
+              mymap.removeLayer(marker);
+              mymap.clearAllEventListeners('zoomend');
+
+              appel(data[0]["bloque"])
+            })
+
+
+
+
             // marker.on('dblclick', addIconInventaire(nom));
 
           } else if (data[0]["type"] == "deplacable"){
-            //idk si on peut juste modifier le draggable en true sur un marker déjà créé ?
-            marker.bindPopup(`Attention je peux me déplacer !"`)
+            marker.bindPopup('Déplace moi !');
+            //var estArrive = cibleMarker(data[0]);
+            //while (!(estArrive)){
+                //var estArrive = cibleMarker(data[0]);
+            //} // idée : on test quand on lanche l'objet
+
+            marker.addEventListener('mouseup', function(){
+              mymap.clearAllEventListeners('zoomend');
+
+              var coordBrut = marker.getLatLng();
+              var coordString = coordBrut.toString();
+
+
+              if (cibleMarker(data[0],stringToCoordonnee(coordString)[0], stringToCoordonnee(coordString)[0])){
+                console.log("réussi");
+
+              appel(data[0]["bloque"])}})
+
 
           } else {  //sinon, on affiche le dialogue attaché
-            marker.bindPopup(`Je suis ${data[0]["dialogue"]}`)
+            marker.bindPopup(`${data[0]["dialogue"]}`);
+
+            marker.addEventListener('click', function() {
+              /*if (data[0]["bloque"])=="telephone" {
+                telephone(data[0])
+              }
+              else {*/
+              appel(data[0]["bloque"])
+
+            })
+
 
             //On supprime le popup si le niveau de zoom change
-            // marker.on('dblclick', addIconInventaire(nom));
             mymap.on('zoom',function(){
-              mymap.removeLayer(popup)
+              mymap.closePopup()
             })
+
           }
         ;}
       })
     });
 }
 
+
+
+function cibleMarker(objet, x1, y1){
+  //fonction a changé quand la colonne des x cibles sera des entiers et non plus des string
+  console.log(distance(x1,y1,objet["x_cible"],objet["y_cible"]));
+
+return (distance(x1,y1,parseInt(objet["x_cible"]),parseInt(objet["y_cible"]))<100)//00/parseInt(objet["niv_zoom_min"]))
+
+}
+
+function stringToCoordonnee(chaineCaractere){
+  //on localise les éléments indésirables dans la chaine de caractère
+  var premiereParenthese = chaineCaractere.indexOf("(");
+  var deuxiemeParenthese = chaineCaractere.indexOf(")");
+  var virgule = chaineCaractere.indexOf(",");
+
+  var x = chaineCaractere.substring(premiereParenthese+1,virgule);
+  var y = chaineCaractere.substring(virgule+1,deuxiemeParenthese);
+
+  return (x,y)
+}
+
+function distance(x1, y1, x2, y2){
+  //donne la distance euclidienne
+  var carre = Math.pow(x1-x2,2) + Math.pow(y1-y2,2);
+  return Math.pow(carre,0.5);
+}
+
 function creerMarker(objet){
   //Créer un marker de l'objet à ses coordonnées, et l'affiche sur la carte
+  var typeObjet = objet["type"];
   var icon = L.icon({
     iconUrl: `image/${objet["nom"]}.png`,
     iconSize: [45, 45],
     popupAnchor: [0, -20]
   });
-  return L.marker([objet["x"], objet["y"]], {icon: icon, zoom: 13}).addTo(mymap);
+  return L.marker([objet["x"], objet["y"]], {icon: icon, zoom: 13, draggable: typeObjet=='deplacable'}).addTo(mymap);
 }
 
 function addIconInventaire(nom) {
   //Trouver un emplacement libre dans l'inventaire
   //Modifier le html pour afficher l'icon de l'objet récupéré
   const img = document.querySelector("#invA");
-  img.src = `image/icon_${nom}.png`;
+  img.src = `image/icons/icon_${nom}.png`;
 }
+
+
 
 appel('voiture');
 appel('rhinoceros');
@@ -75,7 +149,11 @@ appel('kadhafi');
 appel('maison_familiale_sarkisov');
 appel('cheval');
 appel('salah');
-
+appel('mandat_perquisition')
+appel('roi')
+appel('fleurs')
+appel('ziad')
+appel('jfe')
 
 // on ajoute un élément sur la carte
 var myIcon = L.icon({
@@ -83,10 +161,9 @@ var myIcon = L.icon({
   iconSize: [45, 45],
   popupAnchor: [0, -20]
 });
-
+/*
 var ziadMarker = L.marker([51.5, 0], {icon: myIcon, zoom: 13}).addTo(mymap)
   .bindPopup('Je suis takieddine');
-
 
 var gueantIcon = L.icon({
   iconUrl: 'image/gueant.png',
@@ -129,45 +206,4 @@ recup.addEventListener('dragend',function(e){
   if (x_souris>52) {
   alert("Attention, Claude a froid");}
 });
-
-
-
-// var papier = document.createElement("img_papier");
-// papier.src = "image/papier.png";
-// papier.style.maxHeight = "50px";
-//
-// inventaire1.appendChild(img_papier);
-
-//
-//     img.src = 'image/inventaire.png';
-//     img.style.width = '350px';
-//
-//     return img;
-//   },
-//
-//   onRemove: function(mymap) {
-//       // Nothing to do here
-//       }
-//   });
-//
-//on ajoute l'inventaire en bas à gauche
-// L.Control.Watermark = L.Control.extend({
-//   onAdd: function(mymap) {
-//     var img = L.DomUtil.create('img');
-//
-//     img.src = 'image/inventaire.png';
-//     img.style.width = '350px';
-//
-//     return img;
-//   },
-  //
-  // onRemove: function(mymap) {
-  //     // Nothing to do here
-  //     }
-  // });
-
-  // L.control.watermark = function(opts) {
-  //     return new L.Control.Watermark(opts);
-  // }
-  //
-  // L.control.watermark({ position: 'bottomleft' }).addTo(mymap);
+*/
