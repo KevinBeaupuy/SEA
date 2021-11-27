@@ -22,6 +22,7 @@ var mediapart = L.marker([48.8506, 2.3798], {icon: mediapartIcon, zoom: 13}).add
 
 function appel(param){
   //fetch un objet dans la bdd et renvoit ses attributs
+  if (!(param=="")){
   $(document).ready(function(event){
     $.ajax({
         url: "fetch.php",
@@ -34,7 +35,6 @@ function appel(param){
 
           //création du marker
           var marker = creerMarker(data[0]);
-          console.log(data[0]);
 
 
           mymap.addEventListener('zoomend',function(){
@@ -47,7 +47,6 @@ function appel(param){
           //Si l'objet est récupérable, alors on l'ajoute ) l'inventaire en clickant (et il n'a pas de dialogue attaché)
           if (data[0]["type"] == "recuperable") {
             marker.addEventListener('click', function(){
-              console.log("passe par la");
               addIconInventaire(data[0]["nom"]);
 
               //son de la récupération d'objets
@@ -66,10 +65,6 @@ function appel(param){
 
           } else if (data[0]["type"] == "deplacable"){
             marker.bindPopup('Déplace moi !');
-            //var estArrive = cibleMarker(data[0]);
-            //while (!(estArrive)){
-                //var estArrive = cibleMarker(data[0]);
-            //} // idée : on test quand on lanche l'objet
 
             marker.addEventListener('mouseup', function(){
               mymap.clearAllEventListeners('zoomend');
@@ -96,7 +91,7 @@ function appel(param){
             })
 
 
-            //On supprime le popup si le niveau de zoom change
+            //On ferme le popup si le niveau de zoom change
             mymap.on('zoom',function(){
               mymap.closePopup()
             })
@@ -105,14 +100,28 @@ function appel(param){
         ;}
       })
     });
-}
+}}
 
 //Téléphone
 var num = document.getElementById('telephone');
+var boutonTel = document.getElementById('boutonTel');
 
-num.addEventListener('submit', function(){
+boutonTel.addEventListener('click', function(){
+
   var numero = num.value;
-  console.log(numero);
+
+  if (numero == "06 41 43 45 47"){//barbara
+    appel("ecole_entpe");
+    appel("ecole_ensg");
+    appel("ecole_enm")
+  }
+  if (numero == "06 77 86 35 42"){//roi
+    appel("roi")
+  }
+  if (numero == "06 57 59 43 83"){//russe
+    appel("voiture")
+  }
+
 })
 
 
