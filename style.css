@@ -212,13 +212,12 @@ GAME---------------------------------------------------------------------------
   z-index: 999;
 }
 #carnet #info{
-  top: 2em;
+  top: 5em;
 }
 
 #carnet #indice  {
   position: absolute;
-  top: 7em;
-  top: 3em;
+  top: 2em;
   text-align: center;
 }
 

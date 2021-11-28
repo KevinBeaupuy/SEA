@@ -77,6 +77,7 @@ function appel(param){
               addIconInventaire(data[0]["nom"]);
 
               //son de la récupération d'objets
+              var audio = document.querySelector("#recupObjet");
               audio.play();
 
               //Maintenant que l'objet a été utilisé, on le supprime et on appel le suivant
@@ -114,7 +115,7 @@ function appel(param){
         }
       })
     })
-  }}}  
+  }}}
 
 
 function changementAffaire(nom){
