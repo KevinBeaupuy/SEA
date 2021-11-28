@@ -57,13 +57,26 @@ function appel(param){
                   marker.remove(mymap);
               }
           })
+
+          //ajout texte sur le carnet
+          var info = document.getElementById('info');
+          info.innerText = data[0]["info_carnet"];
+
+          //ajout possibilité d'ajouter un indice
+          var indiceSup = document.querySelector('.indiceSup');//document.querySelector(".button");
+          if (data[0]["indice"]==""){
+            indiceSup.disabled = true;
+          } else {
+            indiceSup.disabled = false;
+            info.innerText += data[0]["indice"];
+          }
+
           //Si l'objet est récupérable, alors on l'ajoute à l'inventaire en clickant
           if (data[0]["type"] == "recuperable") {
             marker.addEventListener('click', function(){
               addIconInventaire(data[0]["nom"]);
 
               //son de la récupération d'objets
-              var audio = document.getElementById("recupObjet");
               audio.play();
 
               //Maintenant que l'objet a été utilisé, on le supprime et on appel le suivant
@@ -304,6 +317,10 @@ function useIconInventaire(i) {
 appel('papier_ziad');
 appel('loi_belge');
 //appel('coffre_bnp');
+//appel('papier_ziad');
+//appel('loi_belge');
+//appel('jean_françois_cope');
+appel('roi')
 
 
 /*
