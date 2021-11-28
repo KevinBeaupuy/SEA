@@ -164,7 +164,16 @@ var i = 4;
  appel(dict.nom);
 
 }}
+/*
+inventaire1.addEventListener('click', function(){
 
+  var popup = document.querySelector(.centered);
+  popup.style.display = "block";
+  var bouton_fin_appel = document.querySelector('#fin_appel');
+  bouton_fin_appel.addEventListener('click', function(){
+    var popup = document.querySelector(.centered);
+    popup.style.display = "none";
+  })*/
 
 //Téléphone
 var inventaire1 = document.getElementById('inventaire1'); //document.getElementById('#inventaire1');
@@ -173,8 +182,13 @@ var boutonTel = document.getElementById('boutonTel');
 
 inventaire1.addEventListener('click', function(){
 
-  var popup = document.querySelector(`.centered`);
+  var popup = document.querySelector('.centered');
   popup.style.display = "block";
+  var bouton_fin_appel = document.querySelector('#fin_appel');
+  bouton_fin_appel.addEventListener('click', function(){
+    var popup = document.querySelector('.centered');
+    popup.style.display = "none";
+  })
 
   boutonTel.addEventListener('click', function(){
   var numero = num.value;
@@ -191,26 +205,28 @@ inventaire1.addEventListener('click', function(){
 
   }
    else{
-  if (numero == "06 77 86 35 42"){//numero du roi
-    //var popup = document.querySelector(`.popup`);
-    var infoTel = document.getElementById('infoTel');
-    infoTel.innerText = "Bonjour, je suis en vacances sur une ile artificielle des Maldives, venez me voir si vous voulez"
+      if (numero == "06 77 86 35 42"){//numero du roi
+      //var popup = document.querySelector(`.popup`);
+      var infoTel = document.getElementById('infoTel');
+      infoTel.innerText = "Bonjour, je suis en vacances sur une ile artificielle des Maldives, venez me voir si vous voulez"
 
-    appel("roi")
+      appel("roi")
 
-  } else {
-  if (numero == "06 57 59 43 83"){// numero des sarkisov
-    var infoTel = document.getElementById('infoTel');
-    infoTel.innerText = "Bonjour, venez nous voir dans notre maison familiale, dans le nord de l'Arménie. C'est mal déservi par les transports alors prenez une voiture dans une de nos agences de location à Moscou"
-    appel("voiture")
-  }
-  else {
-    var infoTel = document.getElementById('infoTel');
+    } else {
+          if (numero == "06 57 59 43 83"){// numero des sarkisov
+            var infoTel = document.getElementById('infoTel');
+            infoTel.innerText = "Bonjour, venez nous voir dans notre maison familiale, dans le nord de l'Arménie. C'est mal déservi par les transports alors prenez une voiture dans une de nos agences de location à Moscou"
+            appel("voiture")
+          }
+          else {
+            var infoTel = document.getElementById('infoTel');
 
-    infoTel.innerText = "Numéro non attribué"
-
-  }
-}}})
+            infoTel.innerText = "Numéro non attribué"
+          }
+        }
+      }
+    }
+  )
 })
 
 
