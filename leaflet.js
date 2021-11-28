@@ -101,50 +101,80 @@ function appel(param){
     });
 }}}
 
-/*
-function changementAffaire(nom){
-/*  var i = 2;
-  do {
-    var img = document.querySelector(`#inv${i}`);
-    i++;
 
-  } while (img.src !== "http://www.localhost/image/icons/icon_vide.png" && i<7)
-  img.src = `image/icons/icon_${nom}.png`;
-}*/
-/*
-  var i = 4;
-    var img = document.querySelector(`#inv${i}`);
+function changementAffaire(nom){
+/*  ne marche pas ...
+var i = 4;
+
+    var img = document.getElementById('inv'+i);
  while (img.src !== "http://www.localhost/image/icons/icon_vide.png" && i<7){
 
-   var img = document.getElementById(`#inv${i}`);
+   var img = document.getElementById('inv'+i);
+   console.log('inv'+i);
+
    img.addEventListener('click', function(){
-     img.src = "http://www.localhost/image/icons/icon_vide.png"
+     img.src = "http://www.localhost/image/icons/icon_vide.png";
+     console.log("un tour");
    })
    i++;
- }}
-*/
+ }}*/
+
+ var img = document.querySelector('#inv4');
+ img.addEventListener('click', function(){
+   img.src = "http://www.localhost/image/icons/icon_vide.png"
+ })
+
+
+ var img = document.querySelector('#inv5');
+ img.addEventListener('click', function(){
+   img.src = "http://www.localhost/image/icons/icon_vide.png"
+ })
+
+ var img = document.querySelector('#inv6');
+ img.addEventListener('click', function(){
+   img.src = "http://www.localhost/image/icons/icon_vide.png"
+ })
+
+ var img = document.querySelector('#inv7');
+ img.addEventListener('click', function(){
+   img.src = "http://www.localhost/image/icons/icon_vide.png"
+ })}
+
+
 
 //Téléphone
 var num = document.getElementById('telephone');
 var boutonTel = document.getElementById('boutonTel');
 
 boutonTel.addEventListener('click', function(){
-  var popup = document.querySelector(`.popup`);
+
   var numero = num.value;
-  console.log(popup.style.display);
-  popup.style.display = "block";
+
+
 
 
   if (numero == "06 41 43 45 47"){//barbara
+    var popup = document.querySelector(`.popup`);
+    var infoTel = document.getElementById('infoTel');
+    infoTel.innerText = "Allo ? Oui bonjour Monsieur, je suis en visite dans une école d'ingénieur sous la tutelle du Ministère de l'ecologie."
+    popup.style.display = "block";
+
     appel("ecole_entpe");
     appel("ecole_ensg");
     appel("ecole_enm");
 
   }
   if (numero == "06 77 86 35 42"){//roi
+    var popup = document.querySelector(`.popup`);
+    var infoTel = document.getElementById('infoTel');
+    infoTel.innerText = "Bonjour, je suis en vacances sur une ile artificielle des Maldives, venez me voir si vous voulez"
+
     appel("roi")
   }
   if (numero == "06 57 59 43 83"){//russe
+    var popup = document.querySelector(`.popup`);
+    var infoTel = document.getElementById('infoTel');
+    infoTel.innerText = "Bonjour, venez nous voir dans notre maison familiale, dans le nord de l'Arménie. C'est mal déservi par les transports alors prenez une voiture dans une de nos agences de location à Moscou"
     appel("voiture")
   }
 })
@@ -230,8 +260,8 @@ appel('mandat_perquisition')
 appel('roi')
 appel('fleurs')
 appel('gueant')
-appel('jfe')
 
+appel('loi_belge');
 
 /*
 // on ajoute un élément sur la carte
