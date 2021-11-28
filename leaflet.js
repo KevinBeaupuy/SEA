@@ -1,12 +1,21 @@
 var mymap = L.map('map', {
     zoomSnap: 1
 }).setView([51.505, 0], 5);
-
+/*
 L.tileLayer('http://tiles.lyrk.org/ls/{z}/{x}/{y}?apikey=982c82cc765f42cf950a57de0d891076', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
   maxZoom: 19,
   minZoom: 3,
+}).addTo(mymap);*/
+
+L.tileLayer('https://{s}.tile.jawg.io/jawg-terrain/{z}/{x}/{y}{r}.png?access-token={accessToken}', {
+	attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+	minZoom: 3,
+	maxZoom: 19,
+	subdomains: 'abcd',
+	accessToken: '3iGD1TvBMo7WDZMJi2edvDBN9hEkNSLMxQ0AMmcViGIPbC6Hvl4czS1GADGxdLAO'
 }).addTo(mymap);
+
 
 //Premier objet chargé en même temps que le début du jeu
 //Celui ci restera d'ailleurs permanent
@@ -101,7 +110,7 @@ function appel(param){
 
 
 function changementAffaire(nom){
-/*  ne marche pas ...
+/*  cette partie ne marche pas ... du coup je l'ai fait en moins propre apres
 var i = 4;
 
     var img = document.getElementById('inv'+i);
