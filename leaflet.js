@@ -1,3 +1,8 @@
+//------------------------------------------------------------------------------
+//Variables globales
+//------------------------------------------------------------------------------
+
+//Initialisation de la carte
 var mymap = L.map('map', {
     zoomSnap: 1
 }).setView([51.505, 0], 5);
@@ -16,6 +21,8 @@ L.tileLayer('https://{s}.tile.jawg.io/jawg-terrain/{z}/{x}/{y}{r}.png?access-tok
 	accessToken: '3iGD1TvBMo7WDZMJi2edvDBN9hEkNSLMxQ0AMmcViGIPbC6Hvl4czS1GADGxdLAO'
 }).addTo(mymap);
 
+mymap.addEventListener('zoomend',function(){
+    console.log(mymap.getZoom())})
 
 //Premier objet chargé en même temps que le début du jeu
 //Celui ci restera d'ailleurs permanent
@@ -26,18 +33,43 @@ var mediapartIcon = L.icon({
 });
 var mediapart = L.marker([48.8506, 2.3798], {icon: mediapartIcon, zoom: 13}).addTo(mymap);
 
+//Variables globales
 var listeAffaires = ['libye','kazakhgate','karachi','reso_garantia','fin','bygmalion','bettencourt'];
+var debut = new Date().getTime();
+var score_tot = 0;
 
+var inventaire1 = document.getElementById('inventaire1'); //document.getElementById('#inventaire1');
+var num = document.getElementById('telephone');
+var boutonTel = document.getElementById('boutonTel');
+
+
+
+//------------------------------------------------------------------------------
+//Fonctions
+//------------------------------------------------------------------------------
 
 function appel(param){
   //fetch un objet dans la bdd, l'affiche sur la carte et initialise ses interaction, avant d'appeler l'objet suivant.
-  if (!(param=="")){
-    if (listeAffaires.includes(param)){
-      mediapart.bindPopup("On dirait que tu as assez d'éléments pour cette affaire, viens me les donner !").openPopup();
-      changementAffaire(param);
-    }
-    else{
 
+  if (!(param=="")){
+    if (param.substring(0,2)=="06") {
+      var info = document.getElementById('info');
+      info.innerText = param;
+    } else {
+    //Cas particulier de transition entre deux scénarios
+    if (listeAffaires.includes(param)){
+      mediapart.bindPopup("On dirait que tu as assez d'éléments pour cette affaire, viens me les donner !");
+      var info = document.getElementById('info');
+      info.innerText = "Va voir médiapart" ;
+      mediapart.addEventListener('popupclose', function() {
+          changementAffaire(param);
+      });
+      mediapart.removeEventListener('popupclose', function() {
+          changementAffaire(param);
+      });
+    } else{
+
+  //Sinon
   $(document).ready(function(event){
     $.ajax({
         url: "fetch.php",
@@ -51,7 +83,7 @@ function appel(param){
           //création du marker
           var marker = creerMarker(data[0]);
           mymap.addEventListener('zoomend',function(){
-              if (mymap.getZoom()>7){
+              if (mymap.getZoom()>data[0]["niv_zoom_min"]){
                   marker.addTo(mymap);
               } else {
                   marker.remove(mymap);
@@ -77,7 +109,7 @@ function appel(param){
               addIconInventaire(data[0]["nom"]);
 
               //son de la récupération d'objets
-              var audio = document.querySelector("#recupObjet");
+              var audio = document.querySelector('#recupObjet');
               audio.play();
 
               //Maintenant que l'objet a été utilisé, on le supprime et on appel le suivant
@@ -116,6 +148,7 @@ function appel(param){
       })
     })
   }}}
+}
 
 
 function changementAffaire(nom){
@@ -134,7 +167,7 @@ var i = 4;
    })
    i++;
  }}*/
-
+/*
  var img4 = document.querySelector('#inv4');
  img4.addEventListener('click', function(){
    img4.src = "http://www.localhost/image/icons/icon_vide.png"
@@ -154,36 +187,61 @@ var i = 4;
  var img7 = document.querySelector('#inv7');
  img7.addEventListener('click', function(){
    img7.src = "http://www.localhost/image/icons/icon_vide.png"
- })
+ })*/
 
-
+ updateScore();
  if (nom=='fin'){ // c'est la fin du jeu
+   var d = new Date;
+   var date = d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear();
+
+   $.ajax({
+     url: "insert_score.php",
+     type: "POST",
+     data: {"username":username, "score":score, "date":date },
+     dataType: "json",
+     async: true,
+   })
    document.location.href="/fin.html";
- }
- else{
+ } else{
 
  var dict = {};
-
  dict['bygmalion'] = "jean_françois_cope";
  dict['reso_garantia'] = "siege_social_reso_garantia";
  dict['karachi'] = "isi";
  dict['kazakhgate'] = "tracfin";
 
- var popup = document.querySelector(`.affaire`);
- var infoAffaire = document.getElementById('infoAffaire');
- infoAffaire.innerText = " des infos quali"
- popup.style.display = "block";
+ appel(dict[nom]); // on appelle le prochain objet
 
- appel(dict.nom);
+ for (let k = 4; k <= 7; k++) {
+    useIconInventaire(k)
+ };
 
+ $(document).ready(function(event){
+   $.ajax({
+       url: "fetch_affaires.php",
+       type: "POST",
+       data: {"affaire": nom},
+       dataType: "json",
+       async: true,         //asynchrone, précision pour certain navigateurs
+       success: function(data,status){
+         var popup = document.querySelector(`.affaire`);
+         var infoAffaire = document.getElementById('infoAffaire');
+         var titreAffaire = document.getElementById('titreAffaire');
+         var sendAffaire = document.getElementById('sendAffaire');
+         titreAffaire.innerText = nom;
+         infoAffaire.innerText = data[0]['resume'];
+         popup.style.display = "block";
+
+         sendAffaire.addEventListener('click', function(){
+           popup.style.display = "none";
+         })
+       }
+     }
+   )
+ })
 }}
 
-
 //Téléphone
-var inventaire1 = document.getElementById('inventaire1'); //document.getElementById('#inventaire1');
-var num = document.getElementById('telephone');
-var boutonTel = document.getElementById('boutonTel');
-
 inventaire1.addEventListener('click', function(){
 
   var popup = document.querySelector('.centered');
@@ -195,40 +253,40 @@ inventaire1.addEventListener('click', function(){
   })
 
   boutonTel.addEventListener('click', function(){
-  var numero = num.value;
+    var numero = num.value;
 
-  if (numero == "06 41 43 45 47"){// numero de barbara pompili
-    //var popup = document.querySelector(`.popup`);
-    var infoTel = document.getElementById('infoTel');
-    infoTel.innerText = "Allo ? Oui bonjour Monsieur, je suis en visite dans une école d'ingénieur sous la tutelle du Ministère de l'ecologie."
-    //popup.style.display = "block";
+    if (numero == "06 41 43 45 47"){// numero de barbara pompili
+      //var popup = document.querySelector(`.popup`);
+      var infoTel = document.getElementById('infoTel');
+      infoTel.innerText = "Allo ? Oui bonjour Monsieur, je suis en visite dans une école d'ingénieur sous la tutelle du Ministère de l'ecologie."
+      //popup.style.display = "block";
 
-    appel("ecole_entpe");
-    appel("ecole_ensg");
-    appel("ecole_enm");
+      appel("ecole_entpe");
+      appel("ecole_ensg");
+      appel("ecole_enm");
 
-  }
-   else{
-  if (numero == "06 77 86 35 42"){//numero du roi
-    //var popup = document.querySelector(`.popup`);
-    var infoTel = document.getElementById('infoTel');
-    infoTel.innerText = "Bonjour, je suis en vacances sur une ile artificielle des Maldives, venez me voir si vous voulez"
+    }
+     else{
+      if (numero == "06 77 86 35 42"){//numero du roi
+        //var popup = document.querySelector(`.popup`);
+        var infoTel = document.getElementById('infoTel');
+        infoTel.innerText = "Bonjour, je suis en vacances sur une ile artificielle des Maldives, venez me voir si vous voulez"
 
-    appel("roi")
+        appel("roi")
 
-  } else {
-  if (numero == "06 57 59 43 83"){// numero des sarkisov
-    var infoTel = document.getElementById('infoTel');
-    infoTel.innerText = "Bonjour, venez nous voir dans notre maison familiale, dans le nord de l'Arménie. C'est mal déservi par les transports alors prenez une voiture dans une de nos agences de location à Moscou"
-    appel("voiture")
-  }
-  else {
-    var infoTel = document.getElementById('infoTel');
-
-    infoTel.innerText = "Numéro non attribué"
-
-  }
-}}})
+      } else {
+        if (numero == "06 57 59 43 83"){// numero des sarkisov
+          var infoTel = document.getElementById('infoTel');
+          infoTel.innerText = "Bonjour, venez nous voir dans notre maison familiale, dans le nord de l'Arménie. C'est mal déservi par les transports alors prenez une voiture dans une de nos agences de location à Moscou"
+          appel("voiture")
+        }
+        else {
+          var infoTel = document.getElementById('infoTel');
+          infoTel.innerText = "Numéro non attribué"
+        }
+      }
+    }
+  })
 })
 
 
@@ -290,11 +348,10 @@ function creerMarker(objet){
 function addIconInventaire(nom) {
   //Ajoute l'objet dans le premier emplacement d'inventaire libre
   var i = 1;
-  while ($(`#inv${i}`).attr("src") !== "image/icons/icon_vide.png" && i<=7) {
+  while ($(`#inv${i}`).attr("src") !== "image/icons/icon_vide.png" && i<7) {
     i++;
   }
   $(`#inv${i}`).attr("src",`image/icons/icon_${nom}.png`);
-  // $(`#inv${i}`).on('click',useIconInventaire(i));
   $(`#inv${i}`).click(useIconInventaire(i));
 }
 
@@ -314,8 +371,24 @@ function useIconInventaire(i) {
   // }
 }
 
+function updateScore() {
+  //Met à jour le score, à la fin de chaque scénario
+  var now = new Date().getTime();
+  var time = new Date(now - debut)
+  var sec = time/1000;
+  var score = Math.round((10-sec/10)*100)/100; //arrondi à 10-2
+  $('#timerScore').html(score);
+  score_tot += score;
+}
 
-appel('isi')
+
+
+//------------------------------------------------------------------------------
+//Main
+//------------------------------------------------------------------------------
+
+//Appel du premier objet
+appel("mediapart")
 
 
 /*

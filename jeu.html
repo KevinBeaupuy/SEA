@@ -7,7 +7,6 @@
     <link rel="apple-touch-icon" sizes="180x180" href="image/favicon/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="image/favicon/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="image/favicon/favicon-16x16.png">
-    <link rel="manifest" href="image/favicon/site.webmanifest">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
       integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
@@ -40,11 +39,14 @@
 
     <div id="container">
 
+      <div id="timer">
+          <span id="timerScore">00</span> années d'emprisonnement
+      </div>
 
       <div id="map"></div>
       <div id="carnet">
         <img src="image/carnet.png">
-          <div id="indice">INDICE</div>
+        <div id="indice">INDICE</div>
         <div id="info"></div>
         <button type="button" class='indiceSup'>Indice supplémentaire</button>
       </div>
@@ -64,13 +66,11 @@
       </div>
 
       <div class="popup affaire">
-        <h1>Changement affaire</h1>
+        <h1 id="titreAffaire"></h1>
         <div id="popupAffaire"></div>
         <p id="infoAffaire"></p>
         <p><button id="sendAffaire">OK</button></p>
       </div>
-
-
 
       <div class="popup centered">
         <h1>Appel</h1>
@@ -81,7 +81,6 @@
         </form>
         <p id="infoTel"></p>
 
-
         <p><button id="fin_appel">OK</button></p>
       </div>
 
@@ -91,8 +90,9 @@
       </div>
 
 
-<script src="leaflet.js"></script>
+      <script src="leaflet.js"></script>
 
+    </div>
 
     </div>
 

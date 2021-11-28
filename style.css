@@ -187,6 +187,11 @@ GAME---------------------------------------------------------------------------
   grid-column: 1/3;
 }
 
+#timer {
+  grid-column: 3;
+  grid-row: 1;
+}
+
 #carnet {
   grid-column: 3;
   grid-row: 2;
@@ -217,7 +222,7 @@ GAME---------------------------------------------------------------------------
 
 #carnet #indice  {
   position: absolute;
-  top: 2em;
+  top: 3em;
   text-align: center;
 }
 
