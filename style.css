@@ -198,24 +198,37 @@ GAME---------------------------------------------------------------------------
 }
 
 #carnet {
-  /* position: relative; */
   grid-column: 3;
   grid-row: 2;
+  position: relative;
+  display: inline-block;
   font-family: 'Dancing Script';
+  /* background-image: url("image/carnet.png");
+  background-size: contain; */
+  z-index: 5;
 }
 #carnet img {
   width: 100%;
   height: 100%;
 }
 
-#carnet #info {
-  grid-column: 3;
-  grid-row: 2;
+#carnet #info, #carnet #indice  {
   position: absolute;
+  padding-left: 20px;
+  padding-right: 20px;
   color: #4e5e72;
   background-color: transparent;
 
   z-index: 999;
+}
+#carnet #info{
+  top: 2em;
+}
+
+#carnet #indice  {
+  position: absolute;
+  top: 7em;
+
 }
 
 #bestScores {
