@@ -276,17 +276,19 @@ POPUP---------------------------------------------------------------------------
  padding-top: 2em;
 }
 
-#popupTel {
-  width: 4rem;
-  height: 10rem;
+.popup #imageTel {
+  float: left;
+  width: 45px;
+  height: 100px;
 }
 
-#popupTel img {
+#imageTel img {
   width: 100%;
   height: 100%
 }
 
 .popup button {
+  /* float: right; */
   line-height: 1.5rem;
   border: 0;
   outline: none;
