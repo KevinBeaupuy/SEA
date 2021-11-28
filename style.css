@@ -198,12 +198,24 @@ GAME---------------------------------------------------------------------------
 }
 
 #carnet {
+  /* position: relative; */
   grid-column: 3;
   grid-row: 2;
+  font-family: 'Dancing Script';
 }
 #carnet img {
   width: 100%;
   height: 100%;
+}
+
+#carnet #info {
+  grid-column: 3;
+  grid-row: 2;
+  position: absolute;
+  color: #4e5e72;
+  background-color: transparent;
+
+  z-index: 999;
 }
 
 #bestScores {
