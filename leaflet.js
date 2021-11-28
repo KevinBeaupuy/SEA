@@ -265,23 +265,28 @@ function creerMarker(objet){
 function addIconInventaire(nom) {
   //Ajoute l'objet dans le premier emplacement d'inventaire libre
   var i = 1;
-  do {
-    var img = document.querySelector(`#inv${i}`);
+  while ($(`#inv${i}`).attr("src") !== "image/icons/icon_vide.png" && i<=7) {
     i++;
-
-  } while (img.src !== "http://www.localhost/image/icons/icon_vide.png" && i<=7)
-  img.src = `image/icons/icon_${nom}.png`;
-  img.addEventListener('click', useIconInventaire(i));
+  }
+  $(`#inv${i}`).attr("src",`image/icons/icon_${nom}.png`);
+  // $(`#inv${i}`).on('click',useIconInventaire(i));
+  $(`#inv${i}`).click(useIconInventaire(i));
 }
 
 function useIconInventaire(i) {
-  var img = document.querySelector(`#inv${i}`);
-  if (img.src == "http://www.localhost/image/icons/icon_vide.png") {
-    console.log("cet objet est actuellement inutile");
-  } else {
-    img.src = `image/icons/icon_vide.png`;
-    img.removeEventListener('click', useIconInventaire(i));
-  }
+  console.log("cet objet est actuellement inutile");
+  console.log($(`#inv${i}`).attr("src"));
+  // $(`#inv${i}`).attr("src",'image/icons/icon_vide.png');
+  $(`#inv${i}`).off("click");
+  // var img = document.querySelector(`#inv${i}`);
+  // if ($(`#inv${i}`).attr("src") !== "image/icons/icon_vide.png") {
+  //   console.log("cet objet est actuellement inutile");
+  // } else {
+  //   $(`#inv${i}`).attr("src", `image/icons/icon_vide.png`);
+  //   $(`#inv${i}`).off("click");
+    // img.removeEventListener('click', useIconInventaire(i));
+
+  // }
 }
 
 appel('papier_ziad');
