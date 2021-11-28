@@ -7,31 +7,48 @@
 // });
 
 
-console.log(location.pathname);
-if (location.pathname == "/game.html") {
-  $.ajax({
-    url: "scores_fetch_best.php",
-    type: "POST",
-    dataType: "json",
-    data: {}
-  })
-    .done(function( data,status ) {
 
-      //Selecteur du tableau html
-      $("#tab_score").html(data);
-    });
-}
+// $.ajax({
+//   url: "scores_fetch.php",
+//   type: "POST",
+//   dataType: "json",
+//   data: {}
+// })
+//   .done(function( data,status ) {
+//
+//     //Selecteur du tableau html
+//     $("#tab_score").html(data);
+//   });
 
-else {
-  $.ajax({
-    url: "scores_fetch.php",
-    type: "POST",
-    dataType: "json",
-    data: {}
-  })
-    .done(function( data,status ) {
 
-      //Selecteur du tableau html
-      $("#tab_score").html(data);
-    });
-}
+  console.log(location.pathname);
+  if (location.pathname == "/jeu.html") {
+    console.log("path game")
+    $.ajax({
+      url: "scores_fetch_best.php",
+      type: "POST",
+      dataType: "json",
+      data: {}
+    })
+      .done(function( data,status ) {
+
+        //Selecteur du tableau html
+        $("#tab_score").html(data);
+      });
+  }
+
+  else {
+    console.log("path scores");
+    $.ajax({
+      url: "scores_fetch.php",
+      type: "POST",
+      dataType: "json",
+      data: {}
+    })
+      .done(function( data,status ) {
+
+        //Selecteur du tableau html
+        $("#tab_score").html(data);
+        console.log(data);
+      });
+  }
