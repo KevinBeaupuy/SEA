@@ -150,14 +150,6 @@ boutonTel.addEventListener('click', function(){
 })
 
 
-
-//pour faire apparaitre la popup
-
-
-//pour faire disparaitre la popup
-
-
-
 //calcul distance pour objets déplacables
 function deg2rad (angle) {
  return (angle / 180) * Math.PI;
