@@ -35,14 +35,14 @@
     </header>
 
     <div id="containerStart">
-      <form id="login" action="objets.php" method="POST">
-          <label> User: <input type="text" name="pseudo" id="pseudo"></label>
-          <!-- <button id="bouton" class="start">START!</button> -->
-        </form>
-      <a class="button" type="button" href="jeu.html">JOUER
+      <form id="login" href="jeu.html" action="objets.php" method="POST">
+          <label><input type="text" placeholder="Nom de joueur" name="pseudo" id="pseudo"></label>
+          <button id="startButton">JOUER!</button>
+      </form>
+      <!-- <a class="button" type="button" href="jeu.html">JOUER -->
         <!-- Rest la BDD objets + reset les pseudos avec aucun score d'enregistré (c'est les joueurs qui n'ont pas terminé leur partie) -->
       </a>
-      <h2>Réussiez-vous à mettre en prison notre cher Sarko ?</h2>
+      <h2>Parviendrez-vous à mettre en prison notre cher Sarko ?</h2>
     </div>
 
     <footer>
