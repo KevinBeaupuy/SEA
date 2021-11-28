@@ -104,22 +104,17 @@ function appel(param){
           } else {
             marker.bindPopup(`${data[0]["dialogue"]}`);
             marker.addEventListener('click', function() {
-            
+
             marker.addEventListener('popupclose', function() {
               appel(data[0]["bloque"]);
               mymap.removeLayer(marker);
+              })
             })
-            //On ferme le popup si le niveau de zoom change
-            mymap.on('zoom',function(){
-            /*mymap.on('zoom',function(){
-              mymap.closePopup()
-            })
-            })*/
           }
-        ;}
+        }
       })
-    });
-}}}
+    })
+  }}}  
 
 
 function changementAffaire(nom){
@@ -318,10 +313,7 @@ function useIconInventaire(i) {
   // }
 }
 
-appel('papier_ziad');
-appel('loi_belge');
-//appel('loi_belge');
-appel('roi')
+
 appel('isi')
 
 
