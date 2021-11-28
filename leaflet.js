@@ -26,7 +26,7 @@ var mediapartIcon = L.icon({
 });
 var mediapart = L.marker([48.8506, 2.3798], {icon: mediapartIcon, zoom: 13}).addTo(mymap);
 
-var listeAffaires = ['libye','kazakhgate','karachi','reso_garantia','bygmalion','bettencourt'];
+var listeAffaires = ['libye','kazakhgate','karachi','reso_garantia','fin','bygmalion','bettencourt'];
 
 
 function appel(param){
@@ -126,27 +126,48 @@ var i = 4;
    i++;
  }}*/
 
- var img = document.querySelector('#inv4');
- img.addEventListener('click', function(){
-   img.src = "http://www.localhost/image/icons/icon_vide.png"
+ var img4 = document.querySelector('#inv4');
+ img4.addEventListener('click', function(){
+   img4.src = "http://www.localhost/image/icons/icon_vide.png"
  })
 
 
- var img = document.querySelector('#inv5');
- img.addEventListener('click', function(){
-   img.src = "http://www.localhost/image/icons/icon_vide.png"
+ var img5 = document.querySelector('#inv5');
+ img5.addEventListener('click', function(){
+   img5.src = "http://www.localhost/image/icons/icon_vide.png"
  })
 
- var img = document.querySelector('#inv6');
- img.addEventListener('click', function(){
-   img.src = "http://www.localhost/image/icons/icon_vide.png"
+ var img6 = document.querySelector('#inv6');
+ img6.addEventListener('click', function(){
+   img6.src = "http://www.localhost/image/icons/icon_vide.png"
  })
 
- var img = document.querySelector('#inv7');
- img.addEventListener('click', function(){
-   img.src = "http://www.localhost/image/icons/icon_vide.png"
+ var img7 = document.querySelector('#inv7');
+ img7.addEventListener('click', function(){
+   img7.src = "http://www.localhost/image/icons/icon_vide.png"
  })
-}
+
+
+ if (nom=='fin'){ // c'est la fin du jeu
+   document.location.href="/fin.html";
+ }
+ else{
+
+ var dict = {};
+
+ dict['bygmalion'] = "jean_françois_cope";
+ dict['reso_garantia'] = "siege_social_reso_garantia";
+ dict['karachi'] = "isi";
+ dict['kazakhgate'] = "tracfin";
+
+ var popup = document.querySelector(`.popup`);
+ var infoAffaire = document.getElementById('infoAffaire');
+ infoAffaire.innerText = " des infos quali"
+ popup.style.display = "block";
+
+ appel(dict.nom);
+
+}}
 
 
 
@@ -263,6 +284,7 @@ function useIconInventaire(i) {
   }
 }
 
+appel('papier_ziad');
 appel('loi_belge');
 
 /*
