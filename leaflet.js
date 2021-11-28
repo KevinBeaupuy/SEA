@@ -21,13 +21,11 @@ var listeAffaires = ['libye','kazakhgate','karachi','reso_garantia','bygmalion',
 
 
 function appel(param){
-  //fetch un objet dans la bdd et renvoit ses attributs
+  //fetch un objet dans la bdd, l'affiche sur la carte et initialise ses interaction, avant d'appeler l'objet suivant.
   if (!(param=="")){
-
     if (listeAffaires.includes(param)){
       mediapart.bindPopup("On dirait que tu as assez d'éléments pour cette affaire, viens me les donner !").openPopup();
       changementAffaire(param);
-
     }
     else{
 
@@ -138,7 +136,8 @@ var i = 4;
  var img = document.querySelector('#inv7');
  img.addEventListener('click', function(){
    img.src = "http://www.localhost/image/icons/icon_vide.png"
- })}
+ })
+}
 
 
 
@@ -149,9 +148,6 @@ var boutonTel = document.getElementById('boutonTel');
 boutonTel.addEventListener('click', function(){
 
   var numero = num.value;
-
-
-
 
   if (numero == "06 41 43 45 47"){//barbara
     var popup = document.querySelector(`.popup`);
@@ -245,21 +241,18 @@ function addIconInventaire(nom) {
 
   } while (img.src !== "http://www.localhost/image/icons/icon_vide.png" && i<=7)
   img.src = `image/icons/icon_${nom}.png`;
+  img.addEventListener('click', useIconInventaire(i));
 }
 
-
-
-appel('voiture');
-appel('rhinoceros');
-appel('loi_belge');
-appel('kadhafi');
-appel('maison_familiale_sarkisov');
-appel('cheval');
-appel('salah');
-appel('mandat_perquisition')
-appel('roi')
-appel('fleurs')
-appel('gueant')
+function useIconInventaire(i) {
+  var img = document.querySelector(`#inv${i}`);
+  if (img.src == "http://www.localhost/image/icons/icon_vide.png") {
+    console.log("cet objet est actuellement inutile");
+  } else {
+    img.src = `image/icons/icon_vide.png`;
+    img.removeEventListener('click', useIconInventaire(i));
+  }
+}
 
 appel('loi_belge');
 
