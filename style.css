@@ -24,14 +24,7 @@ header {
   grid-column: 1/-1;
   grid-row: 1;
   text-align:center;
-  /* background: url(image/sea_logo4.png) no-repeat;
-  background-size: auto 100%; */
 }
-
-/* header #logo {
-  object-fit: contain;
-  z-index: 4;
-} */
 
 footer {
   grid-column: 1 / 7;
@@ -146,10 +139,7 @@ INDEX---------------------------------------------------------------------------
   margin: auto;
 }
 
-/*
-INDEX - Bouton Start -----------------------------------------------------------
-*/
-.button {
+#startButton {
   grid-column: 2;
   grid-row: 2;
   margin: auto;
@@ -177,12 +167,12 @@ INDEX - Bouton Start -----------------------------------------------------------
               inset -2px -2px 3px rgba(0, 0, 0, .6);
 }
 
-.button:hover {
+#startButton:hover {
     color: #427dff;
     background-color: #ffc442;
 }
 
-.button:active {
+#startButton:active {
     box-shadow: inset -2px -2px 3px rgba(255, 255, 255, .6),
                 inset 2px 2px 3px rgba(0, 0, 0, .6);
 }

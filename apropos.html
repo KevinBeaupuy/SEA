@@ -18,7 +18,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-    <!-- <link rel="stylesheet" href="./style_contact.css"> -->
   </head>
 
   <body>
@@ -58,7 +57,14 @@
       </div>
       <p class="result-message">Thank you for your message</p>
       </div>
-        <script  src="./script_contact.js"></script>
+        <!-- <script  src="./script_contact.js"> -->
+        <script>
+          function addClass() {
+            document.body.classList.add("sent");
+          }
+          sendLetter.addEventListener("click", addClass);
+
+        </script>
 
 
 
