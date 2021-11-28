@@ -91,10 +91,7 @@ function appel(param){
           } else {
             marker.bindPopup(`${data[0]["dialogue"]}`);
             marker.addEventListener('click', function() {
-              /*if (data[0]["bloque"])=="telephone" {
-                telephone(data[0])
-              }
-              else {*/
+
               appel(data[0]["bloque"]);
             })
             //On ferme le popup si le niveau de zoom change
@@ -102,7 +99,6 @@ function appel(param){
               mymap.closePopup()
             })
           }
-          // appel(data[0]["bloque"])
         ;}
       })
     });
@@ -160,7 +156,7 @@ var i = 4;
  dict['karachi'] = "isi";
  dict['kazakhgate'] = "tracfin";
 
- var popup = document.querySelector(`.popup`);
+ var popup = document.querySelector(`.affaire`);
  var infoAffaire = document.getElementById('infoAffaire');
  infoAffaire.innerText = " des infos quali"
  popup.style.display = "block";
@@ -170,35 +166,38 @@ var i = 4;
 }}
 
 
-
 //Téléphone
+var inventaire1 = document.getElementById('inventaire1'); //document.getElementById('#inventaire1');
 var num = document.getElementById('telephone');
 var boutonTel = document.getElementById('boutonTel');
 
-boutonTel.addEventListener('click', function(){
+inventaire1.addEventListener('click', function(){
+
+  var popup = document.querySelector(`.centered`);
+  popup.style.display = "block";
 
   var numero = num.value;
 
-  if (numero == "06 41 43 45 47"){//barbara
-    var popup = document.querySelector(`.popup`);
+  if (numero == "06 41 43 45 47"){// numero de barbara pompili
+    //var popup = document.querySelector(`.popup`);
     var infoTel = document.getElementById('infoTel');
     infoTel.innerText = "Allo ? Oui bonjour Monsieur, je suis en visite dans une école d'ingénieur sous la tutelle du Ministère de l'ecologie."
-    popup.style.display = "block";
+    //popup.style.display = "block";
 
     appel("ecole_entpe");
     appel("ecole_ensg");
     appel("ecole_enm");
 
   }
-  if (numero == "06 77 86 35 42"){//roi
-    var popup = document.querySelector(`.popup`);
+  if (numero == "06 77 86 35 42"){//numero du roi
+    //var popup = document.querySelector(`.popup`);
     var infoTel = document.getElementById('infoTel');
     infoTel.innerText = "Bonjour, je suis en vacances sur une ile artificielle des Maldives, venez me voir si vous voulez"
 
     appel("roi")
   }
-  if (numero == "06 57 59 43 83"){//russe
-    var popup = document.querySelector(`.popup`);
+  if (numero == "06 57 59 43 83"){// numero des sarkisov
+    //var popup = document.querySelector(`.popup`);
     var infoTel = document.getElementById('infoTel');
     infoTel.innerText = "Bonjour, venez nous voir dans notre maison familiale, dans le nord de l'Arménie. C'est mal déservi par les transports alors prenez une voiture dans une de nos agences de location à Moscou"
     appel("voiture")
@@ -233,8 +232,7 @@ function cibleMarker(objet, x1, y1){
   if (dsMediapart < 100) {
     mediapart.bindPopup("Ce n'est pas à nous que tu dois donner l'objet !").openPopup();
   };
-  return ds<10;
-  //return (distance(parseInt(x1),parseInt(y1),parseInt(objet["x_cible"]),parseInt(objet["y_cible"]))<100)//00/parseInt(objet["niv_zoom_min"]))
+  return ds<15;
 }
 
 function stringToCoordonnee(chaineCaractere){
@@ -274,9 +272,9 @@ function addIconInventaire(nom) {
 }
 
 function useIconInventaire(i) {
-  console.log("cet objet est actuellement inutile");
-  console.log($(`#inv${i}`).attr("src"));
   // $(`#inv${i}`).attr("src",'image/icons/icon_vide.png');
+
+
   $(`#inv${i}`).off("click");
   // var img = document.querySelector(`#inv${i}`);
   // if ($(`#inv${i}`).attr("src") !== "image/icons/icon_vide.png") {
@@ -291,6 +289,8 @@ function useIconInventaire(i) {
 
 appel('papier_ziad');
 appel('loi_belge');
+//appel('coffre_bnp');
+
 
 /*
 // on ajoute un élément sur la carte
