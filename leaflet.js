@@ -175,6 +175,11 @@ inventaire1.addEventListener('click', function(){
 
   var popup = document.querySelector(`.centered`);
   popup.style.display = "block";
+  var bouton_fin_appel = document.querySelector('#fin_appel');
+  bouton_fin_appel.addEventListener('click', function(){
+    var popup = document.querySelector(`.centered`);
+    popup.style.display = "none";
+  })
 
   var numero = num.value;
 
