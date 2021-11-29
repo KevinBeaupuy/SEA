@@ -161,6 +161,7 @@ INDEX---------------------------------------------------------------------------
 }
 
 #sarko {
+  display: inline-block;
   grid-column: 1/-1;
   grid-row: 1/-1;
   margin: 0;
@@ -170,7 +171,7 @@ INDEX---------------------------------------------------------------------------
 #containerStart #sarko img {
   height: 120%;
   width: 100%;
-  opacity: 0.15;
+  opacity: 0.1;
 }
 
 #startButton {
@@ -639,8 +640,9 @@ FIN----------------------------------------------------------------------------
 #imageFin {
   grid-column: 1/-1;
   grid-row: 1/-1;
+  display:flex
 }
 #imageFin img {
-  height: 100%;
-  weight: auto;
+  weight: ;
+  height: auto;
 }

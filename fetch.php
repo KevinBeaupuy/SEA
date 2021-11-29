@@ -1,6 +1,5 @@
 <?php
 $nom=$_POST["nom"];
-// $nom="parfum";
 
 include('connect.php');
 
@@ -12,6 +11,5 @@ if($result=mysqli_query($link,$requete)){
     $tab[]=$ligne;
   }
 }
-
 echo json_encode($tab);
 ?>

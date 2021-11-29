@@ -5,8 +5,7 @@
 //Initialisation de la carte
 var mymap = L.map('map', {
     zoomSnap: 1
-}).setView([51.505, 0], 5);
-
+}).setView([48.8506, 2.3798], 17);
 
 L.tileLayer('https://{s}.tile.jawg.io/jawg-terrain/{z}/{x}/{y}{r}.png?access-token={accessToken}', {
 	attribution: '<a href="http://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -25,11 +24,6 @@ var mediapartIcon = L.icon({
   popupAnchor: [0, -20]
 });
 var mediapart = L.marker([48.8506, 2.3798], {icon: mediapartIcon, zoom: 13}).addTo(mymap);
-//mediapart.addEventListener('popupclose', function() {
-    //var mediapartFerme = true;
-//});
-//mediapart.removeEventListener('popupclose', function() {
-    //changementAffaire(param);
 
 //Variables globales
 var listeObjet = [];
@@ -93,10 +87,8 @@ function appel(param){
 
           mymap.addEventListener('zoomend',function(){
               if (mymap.getZoom()>data[0]["niv_zoom_min"]){
-                  //marker.addTo(mymap);
                   marker.setOpacity(1);
               } else {
-                  //marker.remove(mymap);
                   marker.setOpacity(0);
               }
           })
@@ -107,15 +99,16 @@ function appel(param){
 
           //ajout possibilité d'ajouter un indice
           var indiceSup = document.getElementById('indiceSup');
-          if (data[0]["indice"]==""){
-            indiceSup.disabled = true;
+          var indiceText = document.getElementById('indiceText');
+          indiceText.innerText = "";
+          if (data[0]["indice"]=='null'){
+              indiceSup.disabled = true;
 
           } else {
             indiceSup.disabled = false;
             indiceSup.addEventListener('click', function(){
-              var infoTemp = info.innerText;
-              info.innerText = infoTemp + data[0]["indice"];
-            }, {once : true});
+                indiceText.innerText = data[0]["indice"];
+              }, {once : true});
           }
 
           //Si l'objet est récupérable, alors on l'ajoute à l'inventaire en clickant
@@ -168,11 +161,12 @@ function appel(param){
 
 
 function changementAffaire(nom){
+  //c'est la fonction qui passe d'une affaire à une autre (6 en tout)
  updateScore();
   if (nom=='fin'){ // c'est la fin du jeu
     var d = new Date;
     var date = d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear();
-
+    //enregistrement du score
     $.ajax({
       url: "insert_score.php",
       type: "POST",
@@ -180,7 +174,7 @@ function changementAffaire(nom){
       dataType: "json",
       async: true,
     })
-    document.location.href="/fin.html";
+    document.location.href="/fin.html"; //on change de page
   } else{
 
  var dictObjet = {};
@@ -200,11 +194,11 @@ function changementAffaire(nom){
  dictText['kazakhgate'] = "En 2010, sous la présidence de Nicolas Sarkozy, la France passe un contrat d’armement de 45 hélicoptères avec le Kazakhstan. Il y aurait eu des rétrocommissions (toujours illégales) et les enquêteurs soupçonnent l’équipe du président Monsieur Sarkozy d’avoir fait pression sur le Sénat belge. Afin d’obtenir la signature du contrat, ils auraient pris une décision favorable à trois hommes d’affaires d’origine kazakh poursuivis en Belgique. En particulier Claude Guéant et Jean-François Etienne des Rosaies, deux proches de Sarkozy, ont été interrogés et mis en garde à vue dans cette affaire de « corruption d’agents publics étrangers » et de « blanchiment en bande organisée ». Cependant, Monsieur Sarkozy n’a jamais pu être directement mis en cause, alors allez-y, attrapez-nous cette anguille.";
  dictText['libye'] = "Comme vous le savez, Monsieur Sarkozy s’est présenté plusieurs fois aux présidentielles en France. Et qui dit nouvelle campagne de Sarkozy, dit nouveaux financements suspicieux et donc nouvelle chance de le coffrer ! Pour sa campagne de 2007, il est donc soupçonné d’avoir reçu des fonds venus du régime de l’ancien dictateur libyen, Kadhafi. Il est mis en examen pour « corruption passive », « financement illégal de campagne électorale », « recel de fonds publics libyens » et « association de malfaiteurs ». Choukri Ghanem était ministre du pétrole en Libye et aurait un carnet sur lequel serait marqué les différents transferts d’argent à Sarkozy.  Béchir Salah était l'interlocuteur direct entre la Libye et la France. Alexandre Djouhri accompagnait Claude Guéant, directeur de cabinet et proche de Sarkozy, lors des voyages en Syrie. Il y a beaucoup de témoins dans cette affaire. Allez les rencontrer pour résoudre cette affaire !";
 
-
+//on supprime les objets en inventaire
  for (let k = 3; k <= 7; k++) {
     useIconInventaire(k);
  };
-
+//on fait apparaitre un affichage
  var popup = document.querySelector(`.affaire`);
  var infoAffaire = document.getElementById('infoAffaire');
  var titreAffaire = document.getElementById('titreAffaire');
@@ -213,13 +207,10 @@ function changementAffaire(nom){
  infoAffaire.innerText = dictText[nom];
  popup.style.display = "block";
 
-
  sendAffaire.addEventListener('click', function(){
  popup.style.display = "none";
     })
-
  appel(dictObjet[nom]); // on appelle le prochain objet
-
   }
 }
 
@@ -233,18 +224,17 @@ inventaire1.addEventListener('click', function(){
   popup.style.display = "block";
   var bouton_fin_appel = document.querySelector('#fin_appel');
   bouton_fin_appel.addEventListener('click', function(){
-    num.value = "";
+    num.value = "";                                     //on remet le texte par défault
     var popup = document.querySelector('.centered');
     popup.style.display = "none";
   })
-
+//c'est le bouton téléphoner
   boutonTel.addEventListener('click', function(){
     var numero = num.value;
 
     if (numero == "06 41 43 45 47"){// numero de barbara pompili
       var infoTel = document.getElementById('infoTel');
       infoTel.innerText = "Allo ? Oui bonjour Monsieur, je suis en visite dans une école d'ingénieur sous la tutelle du Ministère de l'ecologie."
-      //popup.style.display = "block";
 
       appel("ecole_entpe");
       appel("ecole_ensg");
@@ -253,7 +243,6 @@ inventaire1.addEventListener('click', function(){
     }
      else{
       if (numero == "06 77 86 35 42"){//numero du roi
-        //var popup = document.querySelector(`.popup`);
         var infoTel = document.getElementById('infoTel');
         infoTel.innerText = "Bonjour, je suis en vacances sur une ile artificielle des Maldives, venez me voir si vous voulez"
 
@@ -267,7 +256,7 @@ inventaire1.addEventListener('click', function(){
         }
         else {
           var infoTel = document.getElementById('infoTel');
-          infoTel.innerText = "Numéro non attribué"
+          infoTel.innerText = "Numéro non attribué" // numéro inconnu
         }
       }
     }
@@ -302,7 +291,7 @@ function cibleMarker(objet, x1, y1){
   if (dsMediapart < 100) {
     mediapart.bindPopup("Ce n'est pas à nous que tu dois donner l'objet !").openPopup();
   };
-  return ds<75; //moins de 75km
+  return ds<75; //moins de 75km : c'est la condition pour valider le déplacement
 }
 
 function stringToCoordonnee(chaineCaractere){
@@ -314,7 +303,7 @@ function stringToCoordonnee(chaineCaractere){
   var x = chaineCaractere.substring(premiereParenthese+1,virgule);
   var y = chaineCaractere.substring(virgule+1,deuxiemeParenthese);
 
-  return [x,y]
+  return [x,y] // pour ensuite retourner les coordonnées propres
 }
 
 
@@ -341,21 +330,8 @@ function addIconInventaire(nom) {
 }
 
 function useIconInventaire(i) {
-
-  document.getElementById('inv'+i.toString()).src = 'image/icons/icon_vide.png';
-
-
-  //$(`#inv${i}`).attr("src",'image/icons/icon_vide.png');
-  //$(`#inv${i}`).off("click");
-  // var img = document.querySelector(`#inv${i}`);
-  // if ($(`#inv${i}`).attr("src") !== "image/icons/icon_vide.png") {
-  //   console.log("cet objet est actuellement inutile");
-  // } else {
-  //   $(`#inv${i}`).attr("src", `image/icons/icon_vide.png`);
-  //   $(`#inv${i}`).off("click");
-    // img.removeEventListener('click', useIconInventaire(i));
-
-  // }
+//change l'icon de l'inventaire
+document.getElementById('inv'+i.toString()).src = 'image/icons/icon_vide.png';
 }
 
 function updateScore() {
@@ -375,61 +351,5 @@ function updateScore() {
 //------------------------------------------------------------------------------
 
 //Appel du premier objet
-//appel("carte_presse");
 changementAffaire('bettencourt');
 mediapart.bindPopup('Bonjour à toi ! Nous avons été initiateur de quasiment toutes affaires sur Sarkozy. Nous acceptons volontier ton aide. Tiens, voilà ta carte de presse.').openPopup();
-
-
-/*
-// on ajoute un élément sur la carte
-var myIcon = L.icon({
-  iconUrl: 'image/ziad.png',
-  iconSize: [45, 45],
-  popupAnchor: [0, -20]
-});
-
-var ziadMarker = L.marker([51.5, 0], {icon: myIcon, zoom: 13}).addTo(mymap)
-  .bindPopup('Je suis takieddine');
-
-var gueantIcon = L.icon({
-  iconUrl: 'image/gueant.png',
-  iconSize: [45, 45],
-  popupAnchor: [0, -20]
-});
-
-
-var bouton_recuperer ='<button id="bouton_recup" ' + '>Récupère moi </button>';
-var recup = L.marker([51.6,0.1],{icon: gueantIcon, zoom:9, draggable:true}).bindPopup(bouton_recuperer);
-
-
-ziadMarker.addEventListener('click',function(){
-
-    mymap.addEventListener('zoomend',function(){
-        if (mymap.getZoom()>11){
-            recup.addTo(mymap);
-        } else {
-            recup.remove(mymap);
-        }
-
-    })
-
-});
-
-
-recup.addEventListener('dragend',function(e){
-  var coord = recup.getLatLng() ;
-  //on transforme les coordonnées en chaine de caractère
-  var coord2 = coord.toString();
-
-  //on localise les éléments indésirables dans la chaine de caractère
-  var premiereParenthese = coord2.indexOf("(");
-  var deuxiemeParenthese = coord2.indexOf(")");
-  var virgule = coord2.indexOf(",");
-
-  var x_souris = coord2.substring(premiereParenthese+1,virgule);
-  var y_souris = coord2.substring(virgule+1,deuxiemeParenthese);
-
-  if (x_souris>52) {
-  alert("Attention, Claude a froid");}
-});
-*/
