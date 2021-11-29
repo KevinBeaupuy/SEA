@@ -4,7 +4,7 @@ $nom=$_POST["nom"];
 
 include('connect.php');
 
-$requete = "SELECT * FROM objets where nom like '".$nom."'";
+$requete = "SELECT * FROM objets where nom = '".$nom."'";
 $tab=[];
 if($result=mysqli_query($link,$requete)){
   while($ligne=mysqli_fetch_assoc($result)){

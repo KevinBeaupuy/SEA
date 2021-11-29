@@ -4,7 +4,7 @@
 
 include('connect.php');
 
-  $requete3 = "SELECT username, score FROM scores ORDER BY score ASC limit 3";
+  $requete3 = "SELECT username, score FROM scores ORDER BY score DESC limit 3";
   $tab=[];
   if($result=mysqli_query($link,$requete3)){
     while($ligne=mysqli_fetch_assoc($result)){

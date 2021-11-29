@@ -2,7 +2,7 @@
 //importation de la bdd
 include('connect.php');
 
-  $requete2 = "SELECT * FROM scores ORDER BY score ASC";
+  $requete2 = "SELECT * FROM scores ORDER BY score DESC";
   $tab=[];
   if($result=mysqli_query($link,$requete2)){
     while($ligne=mysqli_fetch_assoc($result)){

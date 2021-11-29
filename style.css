@@ -131,17 +131,51 @@ INDEX---------------------------------------------------------------------------
 */
 #containerStart {
   background-image: url("image/image_fond.png");
+  text-shadow: #fff 1px 1px, #fff -1px 1px, #fff -1px -1px, #fff 1px -1px;
+}
+
+#containerStart p {
+  z-index: 3;
+  grid-column: 1/-1;
+  grid-row: 1;
+  text-align: center;
+  padding-top: 2em;
+  font-size: 120%;
+  font-weight: bold;
 }
 
 #login {
+  z-index: 3;
   grid-column: 2;
-  grid-row: 1;
+  grid-row: 2;
   margin: auto;
+}
+#login input {
+  border-radius: 7px;
+  padding: 1em;
+  background-color:  #ddd;
+}
+
+#login ::placeholder {
+  text-align: center;
+}
+
+#sarko {
+  grid-column: 1/-1;
+  grid-row: 1/-1;
+  margin: 0;
+  z-index: 0;
+}
+
+#containerStart #sarko img {
+  height: 120%;
+  width: 100%;
+  opacity: 0.32;
 }
 
 #startButton {
-  grid-column: 2;
-  grid-row: 2;
+  z-index: 2
+  display: inline-block;
   margin: auto;
 
   display:flex;
@@ -198,8 +232,8 @@ GAME---------------------------------------------------------------------------
   position: relative;
   display: inline-block;
   font-family: 'Dancing Script';
-  /* background-image: url("image/carnet.png");
-  background-size: contain; */
+  font-weight: bold;
+  font-size: 110%;
   z-index: 5;
 }
 #carnet img {
@@ -217,7 +251,7 @@ GAME---------------------------------------------------------------------------
   z-index: 999;
 }
 #carnet #info{
-  top: 5em;
+  top: 2em;
 }
 
 #carnet #indice  {
@@ -226,9 +260,17 @@ GAME---------------------------------------------------------------------------
   text-align: center;
 }
 
+#indiceSup {
+  margin-left: 1em;
+  display: inline-block;
+  margin-top: 3em;
+}
+
 #bestScores {
   grid-column: 3;
-  grid-row: 3;
+  grid-row: 3/5;
+  padding-top: 5em;
+  margin: auto;
 }
 
 #inventaire {
@@ -326,6 +368,45 @@ POPUP---------------------------------------------------------------------------
   left: 0;
   right: 0;
   margin: 1rem auto;
+}
+/*
+SOLUTION----------------------------------------------------------------------------
+*/
+
+#intro {
+  grid-row: 1;
+  grid-column: 1/-1;
+}
+
+.soluce  {
+  height: auto;
+}
+.soluce #container {
+    grid-template-rows: auto ;
+    grid-template-columns: 50% 50%;
+    grid-gap: 2em;
+    padding: 2em;
+}
+
+/*
+SCORES----------------------------------------------------------------------------
+*/
+.pscores #tab_score {
+  grid-column: 2;
+  grid-row: 1/-1;
+  margin: auto;
+}
+
+#tab_gauche {
+  grid-column: 1;
+}
+#tab_droite {
+  grid-column: 3;
+}
+
+.pscores div img {
+  width: 100%;
+  height: 100%;
 }
 
 /*
