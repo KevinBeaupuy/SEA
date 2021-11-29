@@ -170,7 +170,7 @@ INDEX---------------------------------------------------------------------------
 #containerStart #sarko img {
   height: 120%;
   width: 100%;
-  opacity: 0.32;
+  opacity: 0.15;
 }
 
 #startButton {
@@ -238,7 +238,7 @@ GAME---------------------------------------------------------------------------
 }
 #carnet img {
   width: 100%;
-  height: 100%;
+  height: auto;
 }
 
 #carnet #info, #carnet #indice  {
@@ -253,7 +253,6 @@ GAME---------------------------------------------------------------------------
 #carnet #info{
   top: 2em;
 }
-
 #carnet #indice  {
   position: absolute;
   top: 3em;
@@ -263,30 +262,25 @@ GAME---------------------------------------------------------------------------
 #indiceSup {
   margin-left: 1em;
   display: inline-block;
-  margin-top: 3em;
+  margin-top: 5em;
 }
 
 #bestScores {
   grid-column: 3;
   grid-row: 3/5;
-  padding-top: 5em;
+  padding-bottom: : 5em;
   margin: auto;
 }
 
 #inventaire {
   grid-column: 1;
   grid-row: 4;
-
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: 100%;
   padding-left:4px;
   padding-bottom: 4px;
-
   z-index: 3;
-
-  /* background: url(image/inventaire.PNG) no-repeat;
-  background-size: auto 100%; */
 }
 
 #inventaire img {
@@ -302,14 +296,24 @@ POPUP---------------------------------------------------------------------------
   display: none;
   text-align: center;
   font-family: monospace;
-  /* overflow: hidden; */
+  background-color: white;
   z-index: 9999;
-}
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 25%;
+  width: 30rem;
+  margin: auto;
+  perspective: 60rem;
+  background-color: #fcfcf8;
+  outline: 1px solid;
+  padding: 2rem 2rem 0;
+  border-radius: 1rem 1rem 1rem 1rem;
+  box-shadow: inset 0 0.75rem 2rem rgba(229, 225, 187, 0.5);
+  }
 
 .popup p {
  width: 100%;
- /* height: 8rem; */
- resize: none;
  padding-top: 2em;
 }
 
@@ -326,7 +330,6 @@ POPUP---------------------------------------------------------------------------
 }
 
 .popup button {
-  /* float: right; */
   line-height: 1.5rem;
   border: 0;
   outline: none;
@@ -343,25 +346,7 @@ POPUP---------------------------------------------------------------------------
   background-color: rgba(78, 94, 114, 1);
   }
 }
-.popup {
-  width: 35rem;
-  background-color: white;
-}
-.popup {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  width: 30rem;
-  margin: auto;
-  perspective: 60rem;
-  height: 16rem;
-  background-color: #fcfcf8;
-  outline: 1px solid transparent;
-  padding: 2rem 2rem 0;
-  border-radius: 1rem 1rem 1rem 1rem;
-  box-shadow: inset 0 0.75rem 2rem rgba(229, 225, 187, 0.5);
-  }
+
 
 .centered {
   position: absolute;
@@ -376,6 +361,7 @@ SOLUTION------------------------------------------------------------------------
 #intro {
   grid-row: 1;
   grid-column: 1/-1;
+  padding: 2em;
 }
 
 .soluce  {
@@ -407,6 +393,17 @@ SCORES--------------------------------------------------------------------------
 .pscores div img {
   width: 100%;
   height: 100%;
+}
+
+/*
+INDEX---------------------------------------------------------------------------
+*/
+#ensg {
+  grid-column: 3;
+  grid-row: 3;
+  float:right;
+  width: auto;
+  height: 180px;
 }
 
 /*

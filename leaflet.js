@@ -24,7 +24,7 @@ var mediapartIcon = L.icon({
   iconSize: [45, 45],
   popupAnchor: [0, -20]
 });
-var mediapart = L.marker([48.8506, 2.3798], {icon: mediapartIcon, zoom: 13}).addTo(mymap).bindPopup('Bonjour à toi ! Nous avons été initiateur de quasiment toutes affaires sur Sarkozy. Nous acceptons volontier ton aide. Tiens, voilà ta carte de presse.');
+var mediapart = L.marker([48.8506, 2.3798], {icon: mediapartIcon, zoom: 13}).addTo(mymap);
 //mediapart.addEventListener('popupclose', function() {
     //var mediapartFerme = true;
 //});
@@ -32,6 +32,8 @@ var mediapart = L.marker([48.8506, 2.3798], {icon: mediapartIcon, zoom: 13}).add
     //changementAffaire(param);
 
 //Variables globales
+var listeObjet = [];
+listeObjet.push("");
 var listeAffaires = ['libye','kazakhgate','karachi','reso_garantia','fin','bygmalion','bettencourt'];
 var debut = new Date().getTime();
 var score_tot = 0;
@@ -49,7 +51,8 @@ var boutonTel = document.getElementById('boutonTel');
 function appel(param){
   //fetch un objet dans la bdd, l'affiche sur la carte et initialise ses interaction, avant d'appeler l'objet suivant.
 
-  if (!(param=="")){
+  if (!(listeObjet.includes(param))){
+    listeObjet.push(param);
     if (param.substring(0,2)=="06") {
       var info = document.getElementById('info');
       info.innerText = param;
@@ -65,7 +68,7 @@ function appel(param){
       mediapart.removeEventListener('popupclose', function() {
           changementAffaire(param);
       });
-    } else{
+    } else{mediapart.bindPopup("Ca n'est pas encore fini");
 
   //Sinon
   $(document).ready(function(event){
@@ -76,11 +79,18 @@ function appel(param){
         dataType: "json",
         async: true,         //asynchrone, précision pour certain navigateurs (pas ceux qui pilotent les navires hein)
         success: function(data,status){
-          console.log(data);
           const nom = data[0]["nom"];
 
           //création du marker
           var marker = creerMarker(data[0]);
+          if (mymap.getZoom()>data[0]["niv_zoom_min"]){
+              //marker.addTo(mymap);
+              marker.setOpacity(1);
+          } else {
+              //marker.remove(mymap);
+              marker.setOpacity(0);
+          }
+
           mymap.addEventListener('zoomend',function(){
               if (mymap.getZoom()>data[0]["niv_zoom_min"]){
                   //marker.addTo(mymap);
@@ -124,7 +134,7 @@ function appel(param){
 
           //Si l'objet est déplaçable
           } else if (data[0]["type"] == "deplacable"){
-            marker.bindPopup('Déplace moi !');
+            marker.bindPopup('Déplace moi !').openPopup();
 
             marker.addEventListener('mouseup', function(){
               mymap.clearAllEventListeners('zoomend');
@@ -133,6 +143,7 @@ function appel(param){
               var coordString = coordBrut.toString();
 
               if (cibleMarker(data[0],stringToCoordonnee(coordString)[0], stringToCoordonnee(coordString)[1])){
+                mymap.removeLayer(marker);
 
               appel(data[0]["bloque"]);
               }
@@ -142,11 +153,12 @@ function appel(param){
           } else {
             marker.bindPopup(`${data[0]["dialogue"]}`);
 
-            marker.addEventListener('popupclose', function() {
+            marker.on('popupclose', function() {
               mymap.removeLayer(marker);
-              appel(data[0]["bloque"]);
 
-            })
+  appel(data[0]["bloque"]);
+            }, {once : true});
+
           }
         }
       })
@@ -164,7 +176,7 @@ function changementAffaire(nom){
     $.ajax({
       url: "insert_score.php",
       type: "POST",
-      data: {"username":username, "score":score, "date":date },
+      data: {"username":'username', "score":score_tot, "date":date },
       dataType: "json",
       async: true,
     })
@@ -174,17 +186,19 @@ function changementAffaire(nom){
  var dictObjet = {};
  var dictText = {};
 
+ dictObjet['bettencourt'] = "carte_presse";
  dictObjet['bygmalion'] = "jean_françois_cope";
  dictObjet['reso_garantia'] = "siege_social_reso_garantia";
  dictObjet['karachi'] = "isi";
  dictObjet['kazakhgate'] = "tracfin";
+ dictObjet['libye'] = 'kadhafi';
 
  dictText['bettencourt'] = "Lors de la campagne présidentielle de 2007, Éric Woerth, le trésorier de la campagne de Nicolas Sarkozy, aurait eu des conflits d’intérêts avec Lilliane Bettencourt, actionnaire principale de l’Oréal et la femme la plus fortunée du monde. Des soupçons de financements illégaux de la campagne sont alors révélés, Sarkozy est accusé d’abus de faiblesse et Woerth de trafic d'influence passif et de recel. Monsieur Sarkozy bénéficie finalement d’un non lieu, et Monsieur Woerth est relaxé. L’affaire est donc classée sans suite, mais la famille Bettencourt aurait retrouvé mercredi dernier un témoignage manuscrit de Liliane qui apporterait de nouvelles preuves accablantes sur Sarkozy !";
-dictText['bygmalion'] = "Lors de sa campagne présidentielle de 2012, Monsieur Sarkozy et son parti ont largement dépassé le plafond financier alloué. Ils ont alors tenté de dissimuler cet excès en fabriquant de toute pièce des fausses factures avec la compagnie de communication Bygmalion. À ce jour, il est condamné à un an de prison ferme pour financement illégal de sa campagne électorale. Mais comme il a fait appel, nous avons plus de temps pour éclaircir les points encore flous de cette histoire."
-dictText['reso_garantia'] = "Cette affaire encore récente a été révélée cette année : des soupçons de « trafic d’influence » et de « blanchiment de crime ou de délit » pour sa rémunération par la société d'assurances russe Reso-Garantia. Plusieurs transferts d’argents importants ont été effectués pour des raisons plus que suspicieuses, afin qu’il ne puisse esquiver cette affaire, trouvez vite les preuves qui l’incriminent !";
-dictText['karachi'] = "En 1994, la France passe des contrats d’armements avec le Pakistan et l’Arabie Saoudite. Il y aurait eu des rétrocommissions (chose illégale en France) qui auraient servi à Monsieur Balladur pour financer sa campagne présidentielle. Sarkozy était alors ministre des Finances et porte-parole de la campagne de Balladur. Un attentat contre des français à Karachi fait 14 morts et aurait été organisé par les services secrets pakistanais pour se venger de la fin des commissions de la part de la France. Actuellement Monsieur Sarkozy n’est que témoin assisté de l’affaire, mais peut être saurez vous trouver des preuves supplémentaires de son implication.";
-dictText['kazakhgate'] = "En 2010, sous la présidence de Nicolas Sarkozy, la France passe un contrat d’armement de 45 hélicoptères avec le Kazakhstan. Il y aurait eu des rétrocommissions (toujours illégales) et les enquêteurs soupçonnent l’équipe du président Monsieur Sarkozy d’avoir fait pression sur le Sénat belge. Afin d’obtenir la signature du contrat, ils auraient pris une décision favorable à trois hommes d’affaires d’origine kazakh poursuivis en Belgique. En particulier Claude Guéant et Jean-François Etienne des Rosaies, deux proches de Sarkozy, ont été interrogés et mis en garde à vue dans cette affaire de « corruption d’agents publics étrangers » et de « blanchiment en bande organisée ». Cependant, Monsieur Sarkozy n’a jamais pu être directement mis en cause, alors allez-y, attrapez-nous cette anguille.";
-dictText['libye'] = "Comme vous le savez, Monsieur Sarkozy s’est présenté plusieurs fois aux présidentielles en France. Et qui dit nouvelle campagne de Sarkozy, dit nouveaux financements suspicieux et donc nouvelle chance de le coffrer ! Pour sa campagne de 2007, il est donc soupçonné d’avoir reçu des fonds venus du régime de l’ancien dictateur libyen, Kadhafi. Il est mis en examen pour « corruption passive », « financement illégal de campagne électorale », « recel de fonds publics libyens » et « association de malfaiteurs ». Choukri Ghanem était ministre du pétrole en Libye et aurait un carnet sur lequel serait marqué les différents transferts d’argent à Sarkozy.  Béchir Salah était l'interlocuteur direct entre la Libye et la France. Alexandre Djouhri accompagnait Claude Guéant, directeur de cabinet et proche de Sarkozy, lors des voyages en Syrie. Il y a beaucoup de témoins dans cette affaire. Allez les rencontrer pour résoudre cette affaire !";
+ dictText['bygmalion'] = "Lors de sa campagne présidentielle de 2012, Monsieur Sarkozy et son parti ont largement dépassé le plafond financier alloué. Ils ont alors tenté de dissimuler cet excès en fabriquant de toute pièce des fausses factures avec la compagnie de communication Bygmalion. À ce jour, il est condamné à un an de prison ferme pour financement illégal de sa campagne électorale. Mais comme il a fait appel, nous avons plus de temps pour éclaircir les points encore flous de cette histoire."
+ dictText['reso_garantia'] = "Cette affaire encore récente a été révélée cette année : des soupçons de « trafic d’influence » et de « blanchiment de crime ou de délit » pour sa rémunération par la société d'assurances russe Reso-Garantia. Plusieurs transferts d’argents importants ont été effectués pour des raisons plus que suspicieuses, afin qu’il ne puisse esquiver cette affaire, trouvez vite les preuves qui l’incriminent !";
+ dictText['karachi'] = "En 1994, la France passe des contrats d’armements avec le Pakistan et l’Arabie Saoudite. Il y aurait eu des rétrocommissions (chose illégale en France) qui auraient servi à Monsieur Balladur pour financer sa campagne présidentielle. Sarkozy était alors ministre des Finances et porte-parole de la campagne de Balladur. Un attentat contre des français à Karachi fait 14 morts et aurait été organisé par les services secrets pakistanais pour se venger de la fin des commissions de la part de la France. Actuellement Monsieur Sarkozy n’est que témoin assisté de l’affaire, mais peut être saurez vous trouver des preuves supplémentaires de son implication.";
+ dictText['kazakhgate'] = "En 2010, sous la présidence de Nicolas Sarkozy, la France passe un contrat d’armement de 45 hélicoptères avec le Kazakhstan. Il y aurait eu des rétrocommissions (toujours illégales) et les enquêteurs soupçonnent l’équipe du président Monsieur Sarkozy d’avoir fait pression sur le Sénat belge. Afin d’obtenir la signature du contrat, ils auraient pris une décision favorable à trois hommes d’affaires d’origine kazakh poursuivis en Belgique. En particulier Claude Guéant et Jean-François Etienne des Rosaies, deux proches de Sarkozy, ont été interrogés et mis en garde à vue dans cette affaire de « corruption d’agents publics étrangers » et de « blanchiment en bande organisée ». Cependant, Monsieur Sarkozy n’a jamais pu être directement mis en cause, alors allez-y, attrapez-nous cette anguille.";
+ dictText['libye'] = "Comme vous le savez, Monsieur Sarkozy s’est présenté plusieurs fois aux présidentielles en France. Et qui dit nouvelle campagne de Sarkozy, dit nouveaux financements suspicieux et donc nouvelle chance de le coffrer ! Pour sa campagne de 2007, il est donc soupçonné d’avoir reçu des fonds venus du régime de l’ancien dictateur libyen, Kadhafi. Il est mis en examen pour « corruption passive », « financement illégal de campagne électorale », « recel de fonds publics libyens » et « association de malfaiteurs ». Choukri Ghanem était ministre du pétrole en Libye et aurait un carnet sur lequel serait marqué les différents transferts d’argent à Sarkozy.  Béchir Salah était l'interlocuteur direct entre la Libye et la France. Alexandre Djouhri accompagnait Claude Guéant, directeur de cabinet et proche de Sarkozy, lors des voyages en Syrie. Il y a beaucoup de témoins dans cette affaire. Allez les rencontrer pour résoudre cette affaire !";
 
 
  for (let k = 3; k <= 7; k++) {
@@ -219,6 +233,7 @@ inventaire1.addEventListener('click', function(){
   popup.style.display = "block";
   var bouton_fin_appel = document.querySelector('#fin_appel');
   bouton_fin_appel.addEventListener('click', function(){
+    num.value = "";
     var popup = document.querySelector('.centered');
     popup.style.display = "none";
   })
@@ -287,7 +302,7 @@ function cibleMarker(objet, x1, y1){
   if (dsMediapart < 100) {
     mediapart.bindPopup("Ce n'est pas à nous que tu dois donner l'objet !").openPopup();
   };
-  return ds<15;
+  return ds<75; //moins de 75km
 }
 
 function stringToCoordonnee(chaineCaractere){
@@ -348,7 +363,7 @@ function updateScore() {
   var now = new Date().getTime();
   var time = new Date(now - debut)
   var sec = time/1000;
-  var score = Math.round((10-sec/10)*100)/100; //arrondi à 10-2
+  var score = Math.round((60-sec/10)*100)/100; //arrondi à 10-2
   $('#timerScore').html(score);
   score_tot += score;
 }
@@ -360,7 +375,9 @@ function updateScore() {
 //------------------------------------------------------------------------------
 
 //Appel du premier objet
-appel("carte_presse")
+//appel("carte_presse");
+changementAffaire('bettencourt');
+mediapart.bindPopup('Bonjour à toi ! Nous avons été initiateur de quasiment toutes affaires sur Sarkozy. Nous acceptons volontier ton aide. Tiens, voilà ta carte de presse.').openPopup();
 
 
 /*
