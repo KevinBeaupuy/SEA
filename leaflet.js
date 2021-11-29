@@ -105,6 +105,8 @@ function appel(param){
               indiceSup.disabled = true;
 
           } else {
+            var audio = document.querySelector('#ecriture');
+            audio.play();
             indiceSup.disabled = false;
             indiceSup.addEventListener('click', function(){
                 indiceText.innerText = data[0]["indice"];
