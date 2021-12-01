@@ -23,7 +23,7 @@
       <div id="bandeau">
         <ul id="menu">
           <li><img src="image/sea_logo.png"></li>
-          <li><a class="active" href="http://www.localhost/">Accueil</a></li>
+          <li><a class="active" href="/index">Accueil</a></li>
           <li><a href="/solution.html" target="_blank" rel="noopener noreferrer">Solution</a></li>
           <li><a href="/scores.html">Scores</a></li>
           <li style="float:right"><a href="apropos.html">À propos</a></li>
@@ -34,15 +34,36 @@
     </header>
 
     <div id="containerStart">
-      <p>Vous êtes un enquêteur privé passionné de politique. Vous travaillez régulièrement avec Médiapart pour l'ampleur des scandals qu'ils révèlent.
-      Monsieur Sarksy ne les apprécie guère d'ailleurs, car il risque gros à cause d'eux. Saurez-vous rassembler les preuves nécessaires à attrapper cette anguille ?</p>
-      <form id="login" href="jeu.html" action="jeu.html" method="POST">
+      <p>Vous êtes un enquêteur privé passionné de politique. Vous travaillez régulièrement avec Médiapart pour l'ampleur des scandales qu'ils révèlent.
+      Monsieur Sarkozy ne les apprécie guère d'ailleurs, car il risque gros à cause d'eux. Saurez-vous rassembler les preuves nécessaires à attrapper cette anguille ?</p>
+      <form id="login" name="login"  action="jeu.html" >
           <label><input type="text" placeholder="Nom de joueur" username="username" id="pseudo"></label>
           <button id="startButton">JOUER</button>
       </form>
       <div id="sarko"><img id="sarko" src="image/favicon/android-chrome-512x512.png"></div>
       <h2>Parviendrez-vous à mettre en prison notre cher Sarko ?</h2>
     </div>
+
+
+<script  type="text/javascript">
+var pseudo = document.getElementById("pseudo");
+var startButton = document.getElementById("startButton");
+startButton.addEventListener("click", function(e){
+  var nom = pseudo.value;
+  if (nom != ""){
+    $.ajax({
+        url: "login.php",
+        type: "POST",
+        data: {"nom": nom},
+        dataType: "json",
+      });
+  } else {
+    e.preventDefault();
+    alert("Veuillez entrer un pseudo");
+  }
+})
+
+</script>
 
     <footer>
       <p>Tout droit réservé C</p>
