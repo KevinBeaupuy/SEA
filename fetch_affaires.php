@@ -1,10 +1,10 @@
 <?php
-$nom=$_POST["nom"];
-// $nom="parfum";
+$affaire = $_POST["nom"];
+// $affaire = "bettencourt";
 
 include('connect.php');
 
-$requete = "SELECT * FROM affaires where nom like '".$nom."'";
+$requete = "SELECT * FROM affaires where affaire = '".$affaire."'";
 $tab=[];
 if($result=mysqli_query($link,$requete)){
   while($ligne=mysqli_fetch_assoc($result)){

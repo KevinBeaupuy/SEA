@@ -172,47 +172,53 @@ function changementAffaire(nom){
     $.ajax({
       url: "insert_score.php",
       type: "POST",
-      data: {"username":'username', "score":score_tot, "date":date },
+      data: {"score":score_tot, "date":date },
       dataType: "json",
       async: true,
     })
     document.location.href="/fin.html"; //on change de page
-  } else{
 
- var dictObjet = {};
- var dictText = {};
-
- dictObjet['bettencourt'] = "carte_presse";
- dictObjet['bygmalion'] = "jean_françois_cope";
- dictObjet['reso_garantia'] = "siege_social_reso_garantia";
- dictObjet['karachi'] = "isi";
- dictObjet['kazakhgate'] = "tracfin";
- dictObjet['libye'] = 'kadhafi';
-
- dictText['bettencourt'] = "Lors de la campagne présidentielle de 2007, Éric Woerth, le trésorier de la campagne de Nicolas Sarkozy, aurait eu des conflits d’intérêts avec Lilliane Bettencourt, actionnaire principale de l’Oréal et la femme la plus fortunée du monde. Des soupçons de financements illégaux de la campagne sont alors révélés, Sarkozy est accusé d’abus de faiblesse et Woerth de trafic d'influence passif et de recel. Monsieur Sarkozy bénéficie finalement d’un non lieu, et Monsieur Woerth est relaxé. L’affaire est donc classée sans suite, mais la famille Bettencourt aurait retrouvé mercredi dernier un témoignage manuscrit de Liliane qui apporterait de nouvelles preuves accablantes sur Sarkozy !";
- dictText['bygmalion'] = "Lors de sa campagne présidentielle de 2012, Monsieur Sarkozy et son parti ont largement dépassé le plafond financier alloué. Ils ont alors tenté de dissimuler cet excès en fabriquant de toute pièce des fausses factures avec la compagnie de communication Bygmalion. À ce jour, il est condamné à un an de prison ferme pour financement illégal de sa campagne électorale. Mais comme il a fait appel, nous avons plus de temps pour éclaircir les points encore flous de cette histoire."
- dictText['reso_garantia'] = "Cette affaire encore récente a été révélée cette année : des soupçons de « trafic d’influence » et de « blanchiment de crime ou de délit » pour sa rémunération par la société d'assurances russe Reso-Garantia. Plusieurs transferts d’argents importants ont été effectués pour des raisons plus que suspicieuses, afin qu’il ne puisse esquiver cette affaire, trouvez vite les preuves qui l’incriminent !";
- dictText['karachi'] = "En 1994, la France passe des contrats d’armements avec le Pakistan et l’Arabie Saoudite. Il y aurait eu des rétrocommissions (chose illégale en France) qui auraient servi à Monsieur Balladur pour financer sa campagne présidentielle. Sarkozy était alors ministre des Finances et porte-parole de la campagne de Balladur. Un attentat contre des français à Karachi fait 14 morts et aurait été organisé par les services secrets pakistanais pour se venger de la fin des commissions de la part de la France. Actuellement Monsieur Sarkozy n’est que témoin assisté de l’affaire, mais peut être saurez vous trouver des preuves supplémentaires de son implication.";
- dictText['kazakhgate'] = "En 2010, sous la présidence de Nicolas Sarkozy, la France passe un contrat d’armement de 45 hélicoptères avec le Kazakhstan. Il y aurait eu des rétrocommissions (toujours illégales) et les enquêteurs soupçonnent l’équipe du président Monsieur Sarkozy d’avoir fait pression sur le Sénat belge. Afin d’obtenir la signature du contrat, ils auraient pris une décision favorable à trois hommes d’affaires d’origine kazakh poursuivis en Belgique. En particulier Claude Guéant et Jean-François Etienne des Rosaies, deux proches de Sarkozy, ont été interrogés et mis en garde à vue dans cette affaire de « corruption d’agents publics étrangers » et de « blanchiment en bande organisée ». Cependant, Monsieur Sarkozy n’a jamais pu être directement mis en cause, alors allez-y, attrapez-nous cette anguille.";
- dictText['libye'] = "Comme vous le savez, Monsieur Sarkozy s’est présenté plusieurs fois aux présidentielles en France. Et qui dit nouvelle campagne de Sarkozy, dit nouveaux financements suspicieux et donc nouvelle chance de le coffrer ! Pour sa campagne de 2007, il est donc soupçonné d’avoir reçu des fonds venus du régime de l’ancien dictateur libyen, Kadhafi. Il est mis en examen pour « corruption passive », « financement illégal de campagne électorale », « recel de fonds publics libyens » et « association de malfaiteurs ». Choukri Ghanem était ministre du pétrole en Libye et aurait un carnet sur lequel serait marqué les différents transferts d’argent à Sarkozy.  Béchir Salah était l'interlocuteur direct entre la Libye et la France. Alexandre Djouhri accompagnait Claude Guéant, directeur de cabinet et proche de Sarkozy, lors des voyages en Syrie. Il y a beaucoup de témoins dans cette affaire. Allez les rencontrer pour résoudre cette affaire !";
-
-//on supprime les objets en inventaire
- for (let k = 3; k <= 7; k++) {
-    useIconInventaire(k);
- };
-//on fait apparaitre un affichage
- var popup = document.querySelector(`.affaire`);
- var infoAffaire = document.getElementById('infoAffaire');
- var titreAffaire = document.getElementById('titreAffaire');
- var sendAffaire = document.getElementById('sendAffaire');
- titreAffaire.innerText = nom;
- infoAffaire.innerText = dictText[nom];
- popup.style.display = "block";
-
- sendAffaire.addEventListener('click', function(){
- popup.style.display = "none";
+  } else{   //On charge la nouvelle affaire
+    $.ajax({
+      url: "fetch_affaires.php",
+      type: "POST",
+      data: {"nom":nom},
+      dataType: "json",
+      async: true,
+      success: function(data,status){
+        // console.log(data[0]);
+      }
     })
- appel(dictObjet[nom]); // on appelle le prochain objet
+
+   var dictObjet = {};
+   var dictText = {};
+
+   dictObjet['bettencourt'] = "carte_presse";
+   dictObjet['bygmalion'] = "jean_françois_cope";
+   dictObjet['reso_garantia'] = "siege_social_reso_garantia";
+   dictObjet['karachi'] = "isi";
+   dictObjet['kazakhgate'] = "tracfin";
+   dictObjet['libye'] = 'kadhafi';
+
+   dictText['bettencourt'] = "Lors de la campagne présidentielle de 2007, Éric Woerth, le trésorier de la campagne de Nicolas Sarkozy, aurait eu des conflits d’intérêts avec Lilliane Bettencourt, actionnaire principale de l’Oréal et la femme la plus fortunée du monde. Des soupçons de financements illégaux de la campagne sont alors révélés, Sarkozy est accusé d’abus de faiblesse et Woerth de trafic d'influence passif et de recel. Monsieur Sarkozy bénéficie finalement d’un non lieu, et Monsieur Woerth est relaxé. L’affaire est donc classée sans suite, mais la famille Bettencourt aurait retrouvé mercredi dernier un témoignage manuscrit de Liliane qui apporterait de nouvelles preuves accablantes sur Sarkozy !";
+   dictText['bygmalion'] = "Lors de sa campagne présidentielle de 2012, Monsieur Sarkozy et son parti ont largement dépassé le plafond financier alloué. Ils ont alors tenté de dissimuler cet excès en fabriquant de toute pièce des fausses factures avec la compagnie de communication Bygmalion. À ce jour, il est condamné à un an de prison ferme pour financement illégal de sa campagne électorale. Mais comme il a fait appel, nous avons plus de temps pour éclaircir les points encore flous de cette histoire."
+   dictText['reso_garantia'] = "Cette affaire encore récente a été révélée cette année : des soupçons de « trafic d’influence » et de « blanchiment de crime ou de délit » pour sa rémunération par la société d'assurances russe Reso-Garantia. Plusieurs transferts d’argents importants ont été effectués pour des raisons plus que suspicieuses, afin qu’il ne puisse esquiver cette affaire, trouvez vite les preuves qui l’incriminent !";
+   dictText['karachi'] = "En 1994, la France passe des contrats d’armements avec le Pakistan et l’Arabie Saoudite. Il y aurait eu des rétrocommissions (chose illégale en France) qui auraient servi à Monsieur Balladur pour financer sa campagne présidentielle. Sarkozy était alors ministre des Finances et porte-parole de la campagne de Balladur. Un attentat contre des français à Karachi fait 14 morts et aurait été organisé par les services secrets pakistanais pour se venger de la fin des commissions de la part de la France. Actuellement Monsieur Sarkozy n’est que témoin assisté de l’affaire, mais peut être saurez vous trouver des preuves supplémentaires de son implication.";
+   dictText['kazakhgate'] = "En 2010, sous la présidence de Nicolas Sarkozy, la France passe un contrat d’armement de 45 hélicoptères avec le Kazakhstan. Il y aurait eu des rétrocommissions (toujours illégales) et les enquêteurs soupçonnent l’équipe du président Monsieur Sarkozy d’avoir fait pression sur le Sénat belge. Afin d’obtenir la signature du contrat, ils auraient pris une décision favorable à trois hommes d’affaires d’origine kazakh poursuivis en Belgique. En particulier Claude Guéant et Jean-François Etienne des Rosaies, deux proches de Sarkozy, ont été interrogés et mis en garde à vue dans cette affaire de « corruption d’agents publics étrangers » et de « blanchiment en bande organisée ». Cependant, Monsieur Sarkozy n’a jamais pu être directement mis en cause, alors allez-y, attrapez-nous cette anguille.";
+   dictText['libye'] = "Comme vous le savez, Monsieur Sarkozy s’est présenté plusieurs fois aux présidentielles en France. Et qui dit nouvelle campagne de Sarkozy, dit nouveaux financements suspicieux et donc nouvelle chance de le coffrer ! Pour sa campagne de 2007, il est donc soupçonné d’avoir reçu des fonds venus du régime de l’ancien dictateur libyen, Kadhafi. Il est mis en examen pour « corruption passive », « financement illégal de campagne électorale », « recel de fonds publics libyens » et « association de malfaiteurs ». Choukri Ghanem était ministre du pétrole en Libye et aurait un carnet sur lequel serait marqué les différents transferts d’argent à Sarkozy.  Béchir Salah était l'interlocuteur direct entre la Libye et la France. Alexandre Djouhri accompagnait Claude Guéant, directeur de cabinet et proche de Sarkozy, lors des voyages en Syrie. Il y a beaucoup de témoins dans cette affaire. Allez les rencontrer pour résoudre cette affaire !";
+
+  //on supprime les objets en inventaire
+   for (let k = 3; k <= 7; k++) {
+      useIconInventaire(k);
+   };
+  //on fait apparaitre un affichage
+   $(`.affaire`).show();
+   $('#titreAffaire').text(nom);
+   $('#infoAffaire').text(dictText[nom]);
+   $('#sendAffaire').click(function(){
+   $(`.affaire`).hide();
+      });
+   appel(dictObjet[nom]); // on appelle le prochain objet
   }
 }
 
@@ -220,15 +226,11 @@ function changementAffaire(nom){
 //Téléphone
 inventaire1.addEventListener('click', function(){
 
-  var audio = document.querySelector('#sonTel');
-  audio.play();
-  var popup = document.querySelector('.centered');
-  popup.style.display = "block";
-  var bouton_fin_appel = document.querySelector('#fin_appel');
-  bouton_fin_appel.addEventListener('click', function(){
+  $('#sonTel').get(0).play();
+  $('.centered').show();
+  $('#fin_appel').click(function(){
     num.value = "";                                     //on remet le texte par défault
-    var popup = document.querySelector('.centered');
-    popup.style.display = "none";
+    $('.centered').hide();
   })
 //c'est le bouton téléphoner
   boutonTel.addEventListener('click', function(){
@@ -315,7 +317,7 @@ function creerMarker(objet){
   var typeObjet = objet["type"];
   var icon = L.icon({
     iconUrl: `image/${objet["nom"]}.png`,
-    iconSize: [45, 45],
+    iconSize: [55, 55],
     popupAnchor: [0, -20]
   });
   return L.marker([objet["x"], objet["y"]], {icon: icon, zoom: 13, draggable: typeObjet=='deplacable'}).addTo(mymap);
@@ -333,7 +335,7 @@ function addIconInventaire(nom) {
 
 function useIconInventaire(i) {
 //change l'icon de l'inventaire
-document.getElementById('inv'+i.toString()).src = 'image/icons/icon_vide.png';
+$(`#inv${i}`).attr("src","image/icons/icon_vide.png");
 }
 
 function updateScore() {
