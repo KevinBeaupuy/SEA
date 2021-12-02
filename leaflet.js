@@ -37,7 +37,6 @@ var num = document.getElementById('telephone');
 var boutonTel = document.getElementById('boutonTel');
 
 
-
 //------------------------------------------------------------------------------
 //Fonctions
 //------------------------------------------------------------------------------
@@ -94,19 +93,16 @@ function appel(param){
           })
 
           //ajout texte sur le carnet
-          var info = document.getElementById('info');
-          info.innerText = data[0]["info_carnet"];
+          $('#info').text(data[0]["info_carnet"]);
 
           //ajout possibilité d'ajouter un indice
           var indiceSup = document.getElementById('indiceSup');
-          var indiceText = document.getElementById('indiceText');
-          indiceText.innerText = "";
+          $('indiceText').text("");
           if (data[0]["indice"]=='null'){
               indiceSup.disabled = true;
 
           } else {
-            var audio = document.querySelector('#ecriture');
-            audio.play();
+            $('#ecriture').get(0).play();
             indiceSup.disabled = false;
             indiceSup.addEventListener('click', function(){
                 indiceText.innerText = data[0]["indice"];
@@ -119,8 +115,7 @@ function appel(param){
               addIconInventaire(data[0]["nom"]);
 
               //son de la récupération d'objets
-              var audio = document.querySelector('#recupObjet');
-              audio.play();
+              $('#recupObjet').get(0).play();
 
               //Maintenant que l'objet a été utilisé, on le supprime et on appel le suivant
               mymap.removeLayer(marker);
@@ -130,30 +125,25 @@ function appel(param){
           //Si l'objet est déplaçable
           } else if (data[0]["type"] == "deplacable"){
             marker.bindPopup('Déplace moi !').openPopup();
-
             marker.addEventListener('mouseup', function(){
               mymap.clearAllEventListeners('zoomend');
-
               var coordBrut = marker.getLatLng();
               var coordString = coordBrut.toString();
 
               if (cibleMarker(data[0],stringToCoordonnee(coordString)[0], stringToCoordonnee(coordString)[1])){
                 mymap.removeLayer(marker);
-
-              appel(data[0]["bloque"]);
+                appel(data[0]["bloque"]);
               }
             })
 
           //Sinon, on affiche le dialogue attaché
           } else {
             marker.bindPopup(`${data[0]["dialogue"]}`);
-
             marker.on('popupclose', function() {
               mymap.removeLayer(marker);
-
-  appel(data[0]["bloque"]);
-            }, {once : true});
-
+              appel(data[0]["bloque"]);
+            },
+            {once : true});
           }
         }
       })
@@ -186,39 +176,20 @@ function changementAffaire(nom){
       dataType: "json",
       async: true,
       success: function(data,status){
-        // console.log(data[0]);
+       //on supprime les objets temporaires de l'inventaire
+        for (let k = 3; k <= 7; k++) {
+           useIconInventaire(k);
+        };
+       //on fait apparaitre un affichage
+        $(`.affaire`).show();
+        $('#titreAffaire').text(data[0]['affaire']);
+        $('#infoAffaire').text(data[0]['resume']);
+        $('#sendAffaire').click(function(){
+          $(`.affaire`).hide();
+        });
+        appel(data[0]['objet']); // on appelle le prochain objet
       }
     })
-
-   var dictObjet = {};
-   var dictText = {};
-
-   dictObjet['bettencourt'] = "carte_presse";
-   dictObjet['bygmalion'] = "jean_françois_cope";
-   dictObjet['reso_garantia'] = "siege_social_reso_garantia";
-   dictObjet['karachi'] = "isi";
-   dictObjet['kazakhgate'] = "tracfin";
-   dictObjet['libye'] = 'kadhafi';
-
-   dictText['bettencourt'] = "Lors de la campagne présidentielle de 2007, Éric Woerth, le trésorier de la campagne de Nicolas Sarkozy, aurait eu des conflits d’intérêts avec Lilliane Bettencourt, actionnaire principale de l’Oréal et la femme la plus fortunée du monde. Des soupçons de financements illégaux de la campagne sont alors révélés, Sarkozy est accusé d’abus de faiblesse et Woerth de trafic d'influence passif et de recel. Monsieur Sarkozy bénéficie finalement d’un non lieu, et Monsieur Woerth est relaxé. L’affaire est donc classée sans suite, mais la famille Bettencourt aurait retrouvé mercredi dernier un témoignage manuscrit de Liliane qui apporterait de nouvelles preuves accablantes sur Sarkozy !";
-   dictText['bygmalion'] = "Lors de sa campagne présidentielle de 2012, Monsieur Sarkozy et son parti ont largement dépassé le plafond financier alloué. Ils ont alors tenté de dissimuler cet excès en fabriquant de toute pièce des fausses factures avec la compagnie de communication Bygmalion. À ce jour, il est condamné à un an de prison ferme pour financement illégal de sa campagne électorale. Mais comme il a fait appel, nous avons plus de temps pour éclaircir les points encore flous de cette histoire."
-   dictText['reso_garantia'] = "Cette affaire encore récente a été révélée cette année : des soupçons de « trafic d’influence » et de « blanchiment de crime ou de délit » pour sa rémunération par la société d'assurances russe Reso-Garantia. Plusieurs transferts d’argents importants ont été effectués pour des raisons plus que suspicieuses, afin qu’il ne puisse esquiver cette affaire, trouvez vite les preuves qui l’incriminent !";
-   dictText['karachi'] = "En 1994, la France passe des contrats d’armements avec le Pakistan et l’Arabie Saoudite. Il y aurait eu des rétrocommissions (chose illégale en France) qui auraient servi à Monsieur Balladur pour financer sa campagne présidentielle. Sarkozy était alors ministre des Finances et porte-parole de la campagne de Balladur. Un attentat contre des français à Karachi fait 14 morts et aurait été organisé par les services secrets pakistanais pour se venger de la fin des commissions de la part de la France. Actuellement Monsieur Sarkozy n’est que témoin assisté de l’affaire, mais peut être saurez vous trouver des preuves supplémentaires de son implication.";
-   dictText['kazakhgate'] = "En 2010, sous la présidence de Nicolas Sarkozy, la France passe un contrat d’armement de 45 hélicoptères avec le Kazakhstan. Il y aurait eu des rétrocommissions (toujours illégales) et les enquêteurs soupçonnent l’équipe du président Monsieur Sarkozy d’avoir fait pression sur le Sénat belge. Afin d’obtenir la signature du contrat, ils auraient pris une décision favorable à trois hommes d’affaires d’origine kazakh poursuivis en Belgique. En particulier Claude Guéant et Jean-François Etienne des Rosaies, deux proches de Sarkozy, ont été interrogés et mis en garde à vue dans cette affaire de « corruption d’agents publics étrangers » et de « blanchiment en bande organisée ». Cependant, Monsieur Sarkozy n’a jamais pu être directement mis en cause, alors allez-y, attrapez-nous cette anguille.";
-   dictText['libye'] = "Comme vous le savez, Monsieur Sarkozy s’est présenté plusieurs fois aux présidentielles en France. Et qui dit nouvelle campagne de Sarkozy, dit nouveaux financements suspicieux et donc nouvelle chance de le coffrer ! Pour sa campagne de 2007, il est donc soupçonné d’avoir reçu des fonds venus du régime de l’ancien dictateur libyen, Kadhafi. Il est mis en examen pour « corruption passive », « financement illégal de campagne électorale », « recel de fonds publics libyens » et « association de malfaiteurs ». Choukri Ghanem était ministre du pétrole en Libye et aurait un carnet sur lequel serait marqué les différents transferts d’argent à Sarkozy.  Béchir Salah était l'interlocuteur direct entre la Libye et la France. Alexandre Djouhri accompagnait Claude Guéant, directeur de cabinet et proche de Sarkozy, lors des voyages en Syrie. Il y a beaucoup de témoins dans cette affaire. Allez les rencontrer pour résoudre cette affaire !";
-
-  //on supprime les objets en inventaire
-   for (let k = 3; k <= 7; k++) {
-      useIconInventaire(k);
-   };
-  //on fait apparaitre un affichage
-   $(`.affaire`).show();
-   $('#titreAffaire').text(nom);
-   $('#infoAffaire').text(dictText[nom]);
-   $('#sendAffaire').click(function(){
-   $(`.affaire`).hide();
-      });
-   appel(dictObjet[nom]); // on appelle le prochain objet
   }
 }
 
@@ -237,32 +208,22 @@ inventaire1.addEventListener('click', function(){
     var numero = num.value;
 
     if (numero == "06 41 43 45 47"){// numero de barbara pompili
-      var infoTel = document.getElementById('infoTel');
-      infoTel.innerText = "Allo ? Oui bonjour Monsieur, je suis en visite dans une école d'ingénieur sous la tutelle du Ministère de l'ecologie."
-
+      $('#infoTel').text("Allo ? Oui bonjour Monsieur, je suis en visite dans une école d'ingénieur sous la tutelle du Ministère de l'ecologie.");
       appel("ecole_entpe");
       appel("ecole_ensg");
       appel("ecole_enm");
 
-    }
-     else{
-      if (numero == "06 77 86 35 42"){//numero du roi
-        var infoTel = document.getElementById('infoTel');
-        infoTel.innerText = "Bonjour, je suis en vacances sur une ile artificielle des Maldives, venez me voir si vous voulez"
+    } else if (numero == "06 77 86 35 42") { //numero du roi
+      $('#infoTel').text("Bonjour, je suis en vacances sur une ile artificielle des Maldives, venez me voir si vous voulez");
+      appel("roi")
 
-        appel("roi")
+    } else if (numero == "06 57 59 43 83"){// numero des sarkisov
+      // var infoTel = document.getElementById('infoTel');
+      $('#infoTel').text("Bonjour, venez nous voir dans notre maison familiale, dans le nord de l'Arménie. C'est mal déservi par les transports alors prenez une voiture dans une de nos agences de location à Moscou");
+      appel("voiture")
 
-      } else {
-        if (numero == "06 57 59 43 83"){// numero des sarkisov
-          var infoTel = document.getElementById('infoTel');
-          infoTel.innerText = "Bonjour, venez nous voir dans notre maison familiale, dans le nord de l'Arménie. C'est mal déservi par les transports alors prenez une voiture dans une de nos agences de location à Moscou"
-          appel("voiture")
-        }
-        else {
-          var infoTel = document.getElementById('infoTel');
-          infoTel.innerText = "Numéro non attribué" // numéro inconnu
-        }
-      }
+    } else {
+      $('#infoTel').text("Numéro non attribué"); // numéro inconnu
     }
   })
 })
@@ -347,7 +308,6 @@ function updateScore() {
   $('#timerScore').html(score);
   score_tot += score;
 }
-
 
 
 //------------------------------------------------------------------------------
