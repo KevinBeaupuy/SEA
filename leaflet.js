@@ -153,8 +153,8 @@ function appel(param){
 
 
 function changementAffaire(nom){
-  //c'est la fonction qui passe d'une affaire à une autre (6 en tout)
- updateScore();
+  //Passe d'une affaire à une autre (6 en tout)
+  updateScore();
   if (nom=='fin'){ // c'est la fin du jeu
     var d = new Date;
     var date = d.getDate() + "/" + d.getMonth() + "/" + d.getFullYear();
@@ -304,9 +304,10 @@ function updateScore() {
   var now = new Date().getTime();
   var time = new Date(now - debut)
   var sec = time/1000;
-  var score = Math.round((60-sec/10)*100)/100; //arrondi à 10-2
-  $('#timerScore').html(score);
+  var score = Math.round((100-sec/10)*100)/100; //arrondi à 10-2
   score_tot += score;
+  debut = now;
+  $('#timerScore').html(score_tot);
 }
 
 
