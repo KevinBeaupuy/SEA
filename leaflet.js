@@ -182,7 +182,7 @@ function changementAffaire(nom){
         };
        //on fait apparaitre un affichage
         $(`.affaire`).show();
-        $('#titreAffaire').text(data[0]['affaire']);
+        $('#titreAffaire').text(data[0]['nom_affaire_francais']);
         $('#infoAffaire').text(data[0]['resume']);
         $('#sendAffaire').click(function(){
           $(`.affaire`).hide();
